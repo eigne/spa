@@ -1,0 +1,1345 @@
+@startuml
+package query_processing_system {
+    class QPS {
+        -QueryEvaluator evaluator
+        +void evaluateQuery(string string, list<string> results, shared_ptr<PKBQPS> pkb)
+    }
+
+    package query {
+        class Query {
+            -vector<shared_ptr<ISynonym>> synonyms
+            -QuerySelection selected
+            -vector<shared_ptr<Clause>> clauses
+            +Query()
+    		+void addSynonym(shared_ptr<ISynonym> synonym)
+    		+void setSelection(QuerySelection selection)
+    		+void addClause(shared_ptr<Clause> clause)
+    		+vector<shared_ptr<ISynonym>> getSynonyms()
+    		+bool hasClauses()
+    		+shared_ptr<Clause> getNextClause()
+            +QuerySelection getSelected()
+        }
+
+        package design_entities {
+            package query_selection {
+                class ISelectable {
+                    +{virtual} shared_ptr<ISynonym> getSynonym()
+                    +{virtual} unordered_set<string> stringifyPossibleValues()
+                    +{virtual} string getSelectedValue(string synonymValue)
+                    +{virtual} unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                }
+
+                class QuerySelection {
+                    -vector<shared_ptr<ISelectable>> selectedValues
+                    -list<string> resultList
+                    -void generateResultList(vector<string> otherValues)
+                    +QuerySelection(vector<shared_ptr<ISelectable>> selectedSynonyms)
+                    +list<string> getAnswer(bool isTruthy)
+                }
+            }
+
+            class ISynonym extends ISelectable {
+                +string synonymIdentifier
+                +{virtual} void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                +{virtual} string getSynonymType()
+                +string getSelectedValue(string synonymValue)
+            }
+
+            package with_ref {
+                class WithRef {
+                    +{virtual} bool intersectWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +{virtual} bool intersectWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +{virtual} bool differenceWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +{virtual} bool differenceWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +{virtual} bool visit(WithVisitor visitor, shared_ptr<WithRef> other)
+                    +{virtual} int getValueCount()
+                    +{virtual} int getRelationshipCount()
+                }
+                WithRef -- WithVisitor
+                WithRef -- IStatement
+                WithRef -- IEntity
+
+                class StatementAttributeRef extends WithRef {
+                    +shared_ptr<IStatementAttribute> attribute
+                    +StatementAttributeRef(shared_ptr<IStatementAttribute> attribute)
+                    +unordered_map<string, unordered_set<int>> getAttributeMap()
+                    +bool intersectWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool intersectWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool visit(WithVisitor visitor, shared_ptr<WithRef> other)
+                    +int getValueCount()
+                    +int getRelationshipCount()
+                }
+
+                class EntityAttributeRef extends WithRef {
+                    +shared_ptr<IEntityAttribute> attribute
+                    +EntityAttributeRef(shared_ptr<IEntityAttribute> attribute)
+                    +unordered_map<string, unordered_set<string>> getAttributeMap()
+                    +bool intersectWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool intersectWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool visit(WithVisitor visitor, shared_ptr<WithRef> other)
+                    +int getValueCount()
+                    +int getRelationshipCount()
+                }
+
+                class ConstantWithRef extends WithRef {
+                    +string value
+                    +ConstantWithRef(string value)
+                    +bool intersectWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool intersectWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> other, unordered_map<string, unordered_set<string>> valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> other, unordered_map<string, unordered_set<int>> valuePairs)
+                    +bool visit(WithVisitor visitor, shared_ptr<WithRef> other)
+                    +int getValueCount()
+                    +int getRelationshipCount()
+                }
+
+                package attributes {
+                    class IEntityAttribute extends ISelectable {
+                        +{virtual} unordered_map<string, unordered_set<string>> getAttributeAndSynonymValues()
+                    }
+
+                    class IStatementAttribute extends ISelectable {
+                        +{virtual} unordered_map<string, unordered_set<int>> getAttributeAndSynonymValues()
+                    }
+
+                    package procedure_name {
+                        class EntityProcedureNameAttribute extends IEntityAttribute {
+                            -shared_ptr<EntityWithProcedureName> synonym
+                            +EntityProcedureNameAttribute(shared_ptr<EntityWithProcedureName> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<string>> getAttributeAndSynonymValues()
+                        }
+
+                        class EntityWithProcedureName implements EntityTypeSynonym {
+                            #unordered_map<string, string> procedureNameMap
+                            +void setProcedureNameAttributes(unordered_map<string, string> values)
+                            +string getCorrespondingProcedureName(string synonymValue)
+                            +unordered_set<string> getProcedureNameAttributes()
+                            +unordered_set<string> getSynonymValuesFromProcedureName(string procedureName)
+                        }
+                        EntityProcedureNameAttribute *-- EntityWithProcedureName
+
+                        class StatementProcedureNameAttribute extends IStatementAttribute {
+                            -shared_ptr<StatementWithProcedureName> synonym
+                            +StatementProcedureNameAttribute(shared_ptr<StatementWithProcedureName> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<int>> getAttributeAndSynonymValues()
+                        }
+
+                        class StatementWithProcedureName implements StatementTypeSynonym {
+                            #unordered_map<int, string> procedureNameMap
+                            +void setProcedureNameAttributes(unordered_map<int, string> values)
+                            +string getCorrespondingProcedureName(int synonymValue)
+                            +unordered_set<string> getProcedureNameAttributes()
+                            +unordered_set<int> getSynonymValuesFromProcedureName(string procedureName)
+                        }
+                        StatementProcedureNameAttribute *-- StatementWithProcedureName
+                    }
+
+                    package statement_number {
+                        class EntityStatementNumberAttribute extends IEntityAttribute {
+                            -shared_ptr<EntityWithStatementNumber> synonym
+                            +EntityStatementNumberAttribute(shared_ptr<EntityWithStatementNumber> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<string>> getAttributeAndSynonymValues()
+                        }
+
+                        class EntityWithStatementNumber implements EntityTypeSynonym {
+                            #unordered_map<string, string> StatementNumberMap
+                            -void setStatementNumberAttributes(unordered_map<string, string> values)
+                            -string getCorrespondingStatementNumber(string synonymValue)
+                            -unordered_set<string> getStatementNumberAttributes()
+                            -unordered_set<string> getSynonymValuesFromStatementNumber(string StatementNumber)
+                        }
+                        EntityStatementNumberAttribute *-- EntityWithStatementNumber
+
+                        class StatementStatementNumberAttribute extends IStatementAttribute {
+                            -shared_ptr<StatementTypeSynonym> synonym
+                            +StatementStatementNumberAttribute(shared_ptr<StatementTypeSynonym> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<int>> getAttributeAndSynonymValues()
+                        }
+                        StatementStatementNumberAttribute *-- StatementTypeSynonym
+                    }
+
+                    package value {
+                        class StatementWithValue implements StatementTypeSynonym {
+                            #unordered_map<int, string> valueMap
+                            +oid setValueAttributes(unordered_map<int, string> values)
+                            +string getCorrespondingValue(int synonymValue)
+                            +unordered_set<string> getValueAttributes()
+                            +unordered_set<int> getSynonymValuesFromValue(string value)
+                        }
+
+                        class EntityValueAttribute extends IEntityAttribute {
+                            -shared_ptr<EntityWithValue> synonym
+                            +EntityValueAttribute(shared_ptr<EntityWithValue> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<string>> getAttributeAndSynonymValues()
+                        }
+
+                        class EntityWithValue implements EntityTypeSynonym {
+                            #unordered_map<string, string> valueMap
+                            +void setValueAttributes(unordered_map<string, string> values)
+                            +string getCorrespondingValue(string synonymValue)
+                            +unordered_set<string> getValueAttributes()
+                            +unordered_set<string> getSynonymValuesFromValue(string Value)
+                        }
+                        EntityValueAttribute *-- EntityWithValue
+
+                        class StatementValueAttribute extends IStatementAttribute {
+                            -shared_ptr<StatementWithValue> synonym
+                            +StatementValueAttribute(shared_ptr<StatementWithValue> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<int>> getAttributeAndSynonymValues()
+                        }
+                        StatementValueAttribute *-- StatementWithValue
+                    }
+
+                    package variable_name {
+                        class EntityVariableNameAttribute extends IEntityAttribute {
+                            -shared_ptr<EntityWithVariableName> synonym
+                            +EntityVariableNameAttribute(shared_ptr<EntityWithVariableName> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<string>> getAttributeAndSynonymValues()
+                        }
+
+                        class EntityWithVariableName implements EntityTypeSynonym {
+                            #unordered_map<string, string> variableNameMap
+                            +void setVariableNameAttributes(unordered_map<string, string> values)
+                            +string getCorrespondingVariableName(string synonymValue)
+                            +unordered_set<string> getVariableNameAttributes()
+                            +unordered_set<string> getSynonymValuesFromVariableName(string variableName)
+                        }
+                        EntityVariableNameAttribute *-- EntityWithVariableName
+
+                        class StatementVariableNameAttribute extends IStatementAttribute {
+                            -shared_ptr<StatementWithVariableName> synonym
+                            +StatementVariableNameAttribute(shared_ptr<StatementWithVariableName> synonym)
+                            +shared_ptr<ISynonym> getSynonym()
+                            +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                            +unordered_set<string> stringifyPossibleValues()
+                            +string getSelectedValue(string synonymValue)
+                            +unordered_map<string, unordered_set<int>> getAttributeAndSynonymValues()
+                        }
+
+                        class StatementWithVariableName implements StatementTypeSynonym {
+                            #unordered_map<int, string> variableNameMap
+                            +void setVariableNameAttributes(unordered_map<int, string> values)
+                            +string getCorrespondingVariableName(int synonymValue)
+                            +unordered_set<string> getVariableNameAttributes()
+                            +unordered_set<int> getSynonymValuesFromVariableName(string variableName)
+                        }
+                        StatementVariableNameAttribute *-- StatementWithVariableName
+                    }
+                }
+            }
+
+            package entity {                
+                class IEntity {
+                    {virtual} unordered_set<string> getNames()
+                        +{virtual} bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                        +{virtual} bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                        +{virtual} bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                        +{virtual} bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                        +{virtual} bool isSynonym()
+                        +{virtual} int getRelationshipCount()
+                        +{virtual} int getValueCount()
+                }
+
+                class EntityName implements IEntity {
+                    #string entityName
+                    +EntityName(string name)
+                    +string getName()
+                    +bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                    +bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                    +bool isSynonym()
+                    +unordered_set<string> getNames()
+                    +int getRelationshipCount()
+                    +int getValueCount()
+                }
+
+                class EntityTypeSynonym extends ISynonym
+                class EntityTypeSynonym extends IEntity {
+                    -void removeRelationships(
+                        unordered_set<string> entityNames,
+                        unordered_map<shared_ptr<IEntity>, unordered_map<string,
+                        unordered_set<string> > > removedEntityRelationships,
+                        unordered_map<shared_ptr<IStatement>,
+                        unordered_map<int, unordered_set<string> > > removedStatementRelationships)
+                    #unordered_set<string> possibleEntityNames
+                    #unordered_set<shared_ptr<IStatement> > relatedStatements
+                    #unordered_map<string, unordered_map<shared_ptr<IStatement>, unordered_set<int> > > statementRelationships
+                    #unordered_set<shared_ptr<IEntity> > relatedEntities
+                    #unordered_map<string, unordered_map<shared_ptr<IEntity>, unordered_set<string> > > entityRelationships
+                    +void setNames(unordered_set<string> names)
+                    +unordered_set<string> getNames()
+                    +bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                    +bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<string, unordered_set<int> > valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<string, unordered_set<string> > valuePairs)
+                    +bool isSynonym()
+                    +int getValueCount()
+                    +int getRelationshipCount()
+                    +shared_ptr<ISynonym> getSynonym()
+                    +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                    +unordered_set<string> stringifyPossibleValues()
+                    +string getSynonymType()
+                }
+
+                class EntityWildcard implements IEntity {
+                    +bool isSynonym()
+                    +int getRelationshipCount()
+                    +int getValueCount()
+                }
+
+                package constant {
+                    class ConstantSynonym extends EntityTypeSynonym
+                    class ConstantSynonym extends EntityWithValue {
+                        +ConstantSynonym(string synonymIdentifier)
+                        +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                    }
+                }
+
+                package procedure {
+                    class IProcedure implements IEntity {
+                        +{virtual} void queryAbstractions(shared_ptr<IVisitsProcedure> v)
+                    }
+
+                    class ProcedureName extends IProcedure
+                    class ProcedureName extends EntityName {
+                        +ProcedureName(string name)
+                        +void queryAbstractions(shared_ptr<IVisitsProcedure> v)
+                    }
+
+                    class ProcedureSynonym extends EntityTypeSynonym
+                    class ProcedureSynonym extends IProcedure
+                    class ProcedureSynonym extends EntityWithProcedureName {
+                        +ProcedureSynonym(string synonymIdentifier)
+                        +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                        +void queryAbstractions(shared_ptr<IVisitsProcedure> v)
+                    }
+
+                    class ProcedureWildcard extends IProcedure
+                    class ProcedureWildcard extends EntityWildcard{
+                        +{static} unordered_set<string> allPossibleProcedures
+                        +void queryAbstractions(shared_ptr<IVisitsProcedure> v)
+                        +unordered_set<string> getNames()
+                    }
+                }
+
+                package variable {
+                    class IVariable extends IEntity {
+                        +{virtual} void queryAbstractions(shared_ptr<IVisitsVariable v)
+                    }
+
+                    class VariableName extends IVariable
+                    class VariableName extends EntityName {
+                        +VariableName(string name)
+                        +void queryAbstractions(shared_ptr<IVisitsVariable> v)
+                    }
+
+                    class VariableSynonym extends EntityTypeSynonym
+                    class VariableSynonym extends IVariable
+                    class VariableSynonym extends EntityWithVariableName {
+                        +VariableSynonym(string synonymIdentifier)
+                        +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                        +void queryAbstractions(shared_ptr<IVisitsVariable> v)
+                    }
+
+                    class VariableWildcard extends IVariable
+                    class VariableWildcard extends EntityWildcard {
+                        +{static} unordered_set<string> allPossibleVariables
+                        +void queryAbstractions(shared_ptr<IVisitsVariable> v)
+                        +unordered_set<string> getNames()
+                    }
+                }
+            }
+
+            package statement {
+                class IStatement {
+                    +{virtual} bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +{virtual} bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +{virtual} bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +{virtual} bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +{virtual} bool isSynonym()
+                    +{virtual} void queryAbstractions(shared_ptr<IVisitsStatement> v)
+                    +{virtual} unordered_set<int> getStatementNumbers()
+                    +{virtual} int getRelationshipCount()
+                    +{virtual} int getValueCount()
+                }
+
+                class StatementLineNumber extends IStatement {
+                    -int lineNumber
+                    +StatementLineNumber(int lineNumber)
+                    +int getStatementLineNumber()
+                    +bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool isSynonym()
+                    +void queryAbstractions(shared_ptr<IVisitsStatement> v)
+                    +unordered_set<int> getStatementNumbers()
+                    +int getRelationshipCount()
+                    +int getValueCount()
+                }
+
+                class StatementWildcard extends IStatement {
+                    +{static} unordered_set<int> allPossibleStatements
+                    +bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool isSynonym()
+                    +void queryAbstractions(shared_ptr<IVisitsStatement> v)
+                    +unordered_set<int> getStatementNumbers()
+                    +int getRelationshipCount()
+                    +int getValueCount()
+                }
+
+                class StatementTypeSynonym extends ISynonym
+                class StatementTypeSynonym extends IStatement {
+                    -void removeRelationships(
+                        unordered_set<int> statementNumbers,
+                        unordered_map<shared_ptr<IEntity>, unordered_map<string, unordered_set<int> > > removedEntityRelationships,
+                        unordered_map<shared_ptr<IStatement>, unordered_map<int, unordered_set<int> > > removedStatementRelationships)
+
+                    #unordered_set<int> possibleStatementNumbers
+                    #unordered_set<shared_ptr<IStatement> > relatedStatements
+                    #unordered_map<int, unordered_map<shared_ptr<IStatement>, unordered_set<int> > > statementRelationships
+                    #unordered_set<shared_ptr<IEntity> > relatedEntities
+                    #unordered_map<int, unordered_map<shared_ptr<IEntity>, unordered_set<string> > > entityRelationships
+
+                    +void setStatementNumbers(unordered_set<int> numbers)
+                    +unordered_set<int> getStatementNumbers()
+                    +bool intersectWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool intersectWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool differenceWithStatement(shared_ptr<IStatement> statement, unordered_map<int, unordered_set<int> > valuePairs)
+                    +bool differenceWithEntity(shared_ptr<IEntity> entity, unordered_map<int, unordered_set<string> > valuePairs)
+                    +bool isSynonym()
+                    +int getValueCount()
+                    +int getRelationshipCount()
+                    +shared_ptr<ISynonym> getSynonym()
+                    +unordered_set<string> stringifyPossibleValues()
+                    +unordered_set<string> getRelationships(shared_ptr<ISelectable> other, string thisValue)
+                    +void queryAbstractions(shared_ptr<IVisitsStatement> v)
+                    +string getSynonymType()
+                }
+
+                class AssignSynonym extends StatementTypeSynonym {
+                    +AssignSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class CallSynonym extends StatementTypeSynonym
+                class CallSynonym extends StatementWithProcedureName {
+                    +CallSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class IfSynonym extends StatementTypeSynonym {
+                    +IfSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class PrintSynonym extends StatementTypeSynonym
+                class PrintSynonym extends StatementWithVariableName {
+                    +PrintSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class ReadSynonym extends StatementTypeSynonym
+                class ReadSynonym extends StatementWithVariableName {
+                    +ReadSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class StatementSynonym extends StatementTypeSynonym {
+                    +StatementSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+
+                class WhileSynonym extends StatementTypeSynonym {
+                    +WhileSynonym(string synonymIdentifier)
+                    +void initializePossibleValues(shared_ptr<IVisitsSynonym> sc)
+                }
+            }
+        }
+
+        package design_abstractions {
+            class Clause {
+                -bool isNegated
+                -int clauseWeight
+                +shared_ptr<set<string>> synonym
+                +Clause(bool isNegated, int clauseWeight)
+                +shared_ptr<set<string>> getSynonyms() { return synonym }
+                +{virtual} bool evaluate(shared_ptr<IStorageReader> reader)
+                +{virtual} int getPriority()
+            }
+            Clause -- IStorageReader
+
+            package pattern {
+                class Pattern extends Clause {
+                    +Pattern(bool isNegated, int clauseWeight)
+                }
+
+                class IfPattern extends Pattern {
+                    +shared_ptr<IfSynonym> ifSynonym
+                    +shared_ptr<IVariable> variable
+                    +IfPattern(shared_ptr<IfSynonym> ifSynonym, shared_ptr<IVariable> variable, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                IfPattern *-- IfSynonym
+                IfPattern *-- IVariable
+                IfPattern -- IfPatternVisitor
+
+                class WhilePattern extends Pattern {
+                    +shared_ptr<WhileSynonym> whileSynonym
+                    +shared_ptr<IVariable> variable
+                    +WhilePattern(shared_ptr<WhileSynonym> whileSynonym, shared_ptr<IVariable> variable, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                WhilePattern *-- WhileSynonym
+                WhilePattern *-- IVariable
+                WhilePattern -- WhilePatternVisitor
+
+                class AssignPattern extends Pattern {
+                    +shared_ptr<AssignSynonym> assignment
+                    +shared_ptr<IVariable> variable
+                    +vector<string> postfixExpression
+                    +bool hasWildcard
+                    +AssignPattern(shared_ptr<AssignSynonym> assignment, shared_ptr<IVariable> variable, string expression, bool hasWildcard, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                AssignPattern *-- AssignSynonym
+                AssignPattern *-- IVariable
+                AssignPattern -- AssignPatternVisitor
+            }
+
+            package such_that {
+                class SuchThat extends Clause {
+                    +SuchThat(bool isNegated, int clauseWeight)
+                }
+
+                class Affects extends SuchThat {
+                    +shared_ptr<IStatement> affectingStatement
+                    +shared_ptr<IStatement> affectedStatement
+                    +Affects(shared_ptr<IStatement> beforeStatement, shared_ptr<IStatement> afterStatement, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                Affects *-- IStatement
+                Affects -- AffectsVisitor
+
+                class Calls extends SuchThat{
+                    +bool hasStar
+                    +shared_ptr<IProcedure> callingProcedure
+                    +shared_ptr<IProcedure> calledProcedure
+                    +Calls(shared_ptr<IProcedure> callingProcedure, shared_ptr<IProcedure> calledProcedure, bool hasStar, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                Calls *-- IProcedure
+                Calls -- CallsVisitor
+
+                class Follows extends SuchThat {
+                    +bool hasStar
+                    +shared_ptr<IStatement> beforeStatement
+                    +shared_ptr<IStatement> afterStatement
+                    +Follows(shared_ptr<IStatement> beforeStatement, shared_ptr<IStatement> afterStatement, bool hasStar, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                Follows *-- IStatement
+                Follows -- FollowsVisitor
+
+                class ModifiesProcedure extends SuchThat {
+                    +shared_ptr<IProcedure> procedureThatModifies
+                    +shared_ptr<IVariable> variableModified
+                    +ModifiesProcedure(shared_ptr<IProcedure> procedureThatModifies, shared_ptr<IVariable> variableModified, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                ModifiesProcedure *-- IProcedure
+                ModifiesProcedure *-- IVariable
+                ModifiesProcedure -- ModifiesProcedureVisitor
+
+                class ModifiesStatement extends SuchThat {
+                    +shared_ptr<IStatement> statementThatModifies
+                    +shared_ptr<IVariable> variableModified
+                    +ModifiesStatement(shared_ptr<IStatement> statementThatModifies, shared_ptr<IVariable> variableModified, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                ModifiesStatement *-- IStatement
+                ModifiesStatement *-- IVariable
+                ModifiesStatement -- ModifiesStatementVisitor
+
+                class Next extends SuchThat {
+                    +bool hasStar
+                    +shared_ptr<IStatement> previousStatement
+                    +shared_ptr<IStatement> nextStatement
+                    +Next(shared_ptr<IStatement> previousStatement, shared_ptr<IStatement> nextStatement, bool hasStar, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                Next *-- IStatement
+                Next -- NextVisitor
+
+                class Parent extends SuchThat {
+                    +bool hasStar
+                    +shared_ptr<IStatement> parentStatement
+                    +shared_ptr<IStatement> childStatement
+                    +Parent(shared_ptr<IStatement> parentStatement, shared_ptr<IStatement> childStatement, bool hasStar, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                Parent *-- IStatement
+                Parent -- ParentVisitor
+
+                class UsesStatement extends SuchThat {
+                    +shared_ptr<IStatement> statementThatUses
+                    +shared_ptr<IVariable> variableUsed
+                    +UsesStatement(shared_ptr<IStatement> statementThatUses, shared_ptr<IVariable> variableUsed, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                UsesStatement *-- IStatement
+                UsesStatement *-- IVariable
+                UsesStatement -- UsesStatementVisitor
+
+                class UsesProcedure extends SuchThat {
+                    +shared_ptr<IProcedure> procedureThatUses
+                    +shared_ptr<IVariable> variableUsed
+                    +UsesProcedure(shared_ptr<IProcedure> procedureThatUses, shared_ptr<IVariable> variableUsed, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                UsesProcedure *-- IProcedure
+                UsesProcedure *-- IVariable
+                UsesProcedure -- UsesProcedureVisitor
+            }
+
+            package with {
+                class With extends Clause {
+                    +shared_ptr<WithRef> ref1
+                    +shared_ptr<WithRef> ref2
+                    +With(shared_ptr<WithRef> ref1, shared_ptr<WithRef> ref2, bool isNegated)
+                    +bool evaluate(shared_ptr<IStorageReader> reader)
+                    +int getPriority()
+                }
+                With *-- WithRef
+                With -- WithVisitor
+            }
+        }
+        
+        Query *-- ISynonym
+        Query *-- QuerySelection
+        Query *-- Clause
+    }
+
+    package query_evaluator {
+        class QueryEvaluator {
+            -shared_ptr<IVisitsSynonym> synonymVisitor
+            -shared_ptr<IStorageReader> storageReader
+            +QueryEvaluator(shared_ptr<IStorageReader> storageReader)
+            +list<string> evaluateQuery(Query query)
+        }
+
+        package storage_reader {
+            class IAffectsReader extends IModifiesStatementReader, IUsesStatementReader,INextReader, ISynonymReader {
+                -unordered_map<int, unordered_set<int>> affectsForwardCache
+                -unordered_map<int, unordered_set<int>> affectsBackwardCache
+                -bool isReadOrCalls(int neighbour)
+                +unordered_set<int> queryAllAffects(int statementNumber, bool queryForAffects)
+            }
+
+            class IAssignPatternReader implements IModifiesStatementReader {
+                +{virtual} bool hasMatchingPattern(int statementNumber, vector<string> postfixExpression, bool exactMatch)
+            }
+
+            class ICallsReader {
+                +{virtual} unordered_set<string> getProceduresCalledBy(string procedureName, bool onlyImmediate)
+                +{virtual} unordered_set<string> getProceduresCalling(string procedureName, bool onlyImmediate)
+                +{virtual} unordered_set<string> getProceduresThatCall()
+                +{virtual} unordered_set<string> getAllCalledProcedures()
+            }
+
+            class IFollowsReader {
+    			+{virtual} unordered_set<int> getFollows(int statementNumber, bool onlyImmediate)
+    			+{virtual} unordered_set<int> getBefore(int statementNumber, bool onlyImmediate)
+    			+{virtual} unordered_set<int> getAllWithFollows()
+    			+{virtual} unordered_set<int> getAllWithBefore()
+            }
+
+            class IIfPatternReader {
+                +{virtual} unordered_set<string> getVariablesUsedInIf(int lineNumber)
+                +{virtual} unordered_set<int> getIfsThatUseVariable(string variable)
+                +{virtual} unordered_set<int> getIfsThatUseAnyVariable()
+            }
+
+            class IModifiesProcedureReader {
+    			+{virtual} unordered_set<string> getVariablesModifiedInProcedure(string procedureName)
+    			+{virtual} unordered_set<string> getProceduresThatModifyVariable(string variableName)
+    			+{virtual} unordered_set<string> getProceduresThatModifyAnyVariable()
+            }
+
+            class IModifiesStatementReader {
+    			+{virtual} unordered_set<string> getVariablesModifiedInStatement(int statementNumber)
+    			+{virtual} unordered_set<int> getStatementsThatModifyVariable(string variableName)
+    			+{virtual} unordered_set<int> getStatementsThatModifyAnyVariable()
+            }
+
+            class INextReader {
+                -unordered_map<int, unordered_set<int>> nextStarCache
+                -unordered_map<int, unordered_set<int>> previousStarCache
+                +{virtual} unordered_set<int> getNext(int statementNumber)
+                +{virtual} unordered_set<int> getPrevious(int statementNumber)
+                +unordered_set<int> queryNextStar(int statementNumber, unordered_set<int> visitedNodes, bool isNext)
+            }
+
+            class IParentReader {
+    			+{virtual} unordered_set<int> getParent(int statementNumber, bool onlyImmediate)
+    			+{virtual} unordered_set<int> getChild(int statementNumber, bool onlyImmediate)
+    			+{virtual} unordered_set<int> getAllWithParent()
+    			+{virtual} unordered_set<int> getAllWithChild()
+            }
+
+            class IStorageReader extends ISynonymReader, IUsesStatementReader, IUsesProcedureReader, IModifiesStatementReader, IModifiesProcedureReader, IParentReader, IFollowsReader, IAssignPatternReader, ICallsReader, IIfPatternReader, IWhilePatternReader, INextReader, IAffectsReader {
+            }
+            QueryEvaluator *-- IStorageReader
+
+            class ISynonymReader {
+    			+{virtual} unordered_set<int> getAllStatements()
+    			+{virtual} unordered_set<int> getAllReads()
+    			+{virtual} unordered_set<int> getAllPrints()
+    			+{virtual} unordered_set<int> getAllCalls()
+    			+{virtual} unordered_set<int> getAllWhiles()
+    			+{virtual} unordered_set<int> getAllIfs()
+    			+{virtual} unordered_set<int> getAllAssigns()
+    			+{virtual} unordered_set<string> getAllVariables()
+    			+{virtual} unordered_set<string> getAllConstants()
+    			+{virtual} unordered_set<string> getAllProcedures()
+    			+{virtual} string getProcedureCalledByCall(int statementNumber)
+            }
+
+            class IUsesProcedureReader {
+    			+{virtual} unordered_set<string> getVariablesUsedInProcedure(string procedureName)
+    			+{virtual} unordered_set<string> getProceduresThatUseVariable(string variableName)
+    			+{virtual} unordered_set<string> getProceduresThatUseAnyVariable()
+            }
+
+            class IUsesStatementReader {
+    			+{virtual} unordered_set<string> getVariablesUsedInStatement(int statementNumber)
+    			+{virtual} unordered_set<int> getStatementsThatUseVariable(string variableName)
+    			+{virtual} unordered_set<int> getStatementsThatUseAnyVariable()
+            }
+
+            class IWhilePatternReader {
+                +{virtual} unordered_set<string> getVariablesUsedInWhile(int lineNumber)
+                +{virtual} unordered_set<int> getWhilesThatUseVariable(string variable)
+                +{virtual} unordered_set<int> getWhilesThatUseAnyVariable()
+            }
+
+            class QPSStorageReader extends IStorageReader {
+                    -shared_ptr<PKBQPS> pkb
+                    +QPSStorageReader(shared_ptr<PKBQPS> pkb)
+                    +unordered_set<int> getAllStatements()
+                    +unordered_set<int> getAllReads()
+                    +unordered_set<int> getAllPrints()
+                    +unordered_set<int> getAllCalls()
+                    +unordered_set<int> getAllWhiles()
+                    +unordered_set<int> getAllIfs()
+                    +unordered_set<int> getAllAssigns()
+                    +unordered_set<string> getAllVariables()
+                    +unordered_set<string> getAllConstants()
+                    +unordered_set<string> getAllProcedures()
+                    +unordered_set<string> getVariablesUsedInStatement(int statementNumber)
+                    +unordered_set<int> getStatementsThatUseVariable(string variableName)
+                    +unordered_set<int> getStatementsThatUseAnyVariable()
+                    +unordered_set<string> getVariablesUsedInProcedure(string procedureName)
+                    +unordered_set<string> getProceduresThatUseVariable(string variableName)
+                    +unordered_set<string> getProceduresThatUseAnyVariable()
+                    +unordered_set<string> getVariablesModifiedInStatement(int statementNumber)
+                    +unordered_set<int> getStatementsThatModifyVariable(string variableName)
+                    +unordered_set<int> getStatementsThatModifyAnyVariable()
+                    +unordered_set<string> getVariablesModifiedInProcedure(string procedureName)
+                    +unordered_set<string> getProceduresThatModifyVariable(string variableName)
+                    +unordered_set<string> getProceduresThatModifyAnyVariable()
+                    +unordered_set<int> getFollows(int statementNumber, bool onlyImmediate)
+                    +unordered_set<int> getBefore(int statementNumber, bool onlyImmediate)
+                    +unordered_set<int> getAllWithFollows()
+                    +unordered_set<int> getAllWithBefore()
+                    +unordered_set<int> getParent(int statementNumber, bool onlyImmediate)
+                    +unordered_set<int> getChild(int statementNumber, bool onlyImmediate)
+                    +unordered_set<int> getAllWithParent()
+                    +unordered_set<int> getAllWithChild()
+                    +unordered_set<string> getProceduresCalledBy(string procedureName, bool onlyImmediate)
+                    +unordered_set<string> getProceduresCalling(string procedureName, bool onlyImmediate)
+                    +unordered_set<string> getProceduresThatCall()
+                    +unordered_set<string> getAllCalledProcedures()
+                    +bool hasMatchingPattern(int statementNumber, vector<string> postfixExpression, bool exactMatch)
+                    +unordered_set<string> getVariablesUsedInIf(int lineNumber)
+                    +unordered_set<int> getIfsThatUseVariable(string variable)
+                    +unordered_set<int> getIfsThatUseAnyVariable()
+                    +unordered_set<string> getVariablesUsedInWhile(int lineNumber)
+                    +unordered_set<int> getWhilesThatUseVariable(string variable)
+                    +unordered_set<int> getWhilesThatUseAnyVariable()
+                    +unordered_set<int> getNext(int statementNumber)
+                    +unordered_set<int> getPrevious(int statementNumber)
+                    +string getProcedureCalledByCall(int statementNumber)
+            }
+        }
+
+        package design_entity_visitor {
+            class SynonymVisitor extends IVisitsSynonym {
+                -shared_ptr<ISynonymReader> synonymReader
+                +SynonymVisitor(shared_ptr<ISynonymReader> synonymReader)
+                +void visit(shared_ptr<ConstantSynonym> entity)
+                +void visit(shared_ptr<ProcedureSynonym> entity)
+                +void visit(shared_ptr<VariableSynonym> entity)
+                +void visit(shared_ptr<AssignSynonym> statement)
+                +void visit(shared_ptr<CallSynonym> statement)
+                +void visit(shared_ptr<IfSynonym> statement)
+                +void visit(shared_ptr<PrintSynonym> statement)
+                +void visit(shared_ptr<ReadSynonym> statement)
+                +void visit(shared_ptr<StatementSynonym> statement)
+                +void visit(shared_ptr<WhileSynonym> statement)
+            }
+            SynonymVisitor -- ISynonymReader
+
+            class IVisitsProcedure {
+                +{virtual} void visit(shared_ptr<ProcedureSynonym> variable)
+                +{virtual} void visit(shared_ptr<ProcedureName> variable)
+                +{virtual} void visit(shared_ptr<ProcedureWildcard> variable)
+            }
+
+            class IVisitsStatement {
+                +{virtual} void visit(shared_ptr<StatementTypeSynonym> statement)
+                +{virtual} void visit(shared_ptr<StatementLineNumber> statement)
+                +{virtual} void visit(shared_ptr<StatementWildcard> statement)
+            }
+
+            class IVisitsSynonym {
+                +{virtual} void visit(shared_ptr<ConstantSynonym> statement)
+                +{virtual} void visit(shared_ptr<ProcedureSynonym> statement)
+                +{virtual} void visit(shared_ptr<VariableSynonym> statement)
+                +{virtual} void visit(shared_ptr<AssignSynonym> statement)
+                +{virtual} void visit(shared_ptr<CallSynonym> statement)
+                +{virtual} void visit(shared_ptr<IfSynonym> statement)
+                +{virtual} void visit(shared_ptr<PrintSynonym> statement)
+                +{virtual} void visit(shared_ptr<ReadSynonym> statement)
+                +{virtual} void visit(shared_ptr<StatementSynonym> statement)
+                +{virtual} void visit(shared_ptr<WhileSynonym> statement)
+            }
+
+            class IVisitsVariable {
+                +{virtual} void visit(shared_ptr<VariableSynonym> variable)
+                +{virtual} void visit(shared_ptr<VariableName> variable)
+                +{virtual} void visit(shared_ptr<VariableWildcard> variable)
+            }
+
+            package relationships {
+                class EntityEntityRelationship {
+                    -vector<pair<string, string>> entityEntityRelationships
+                    +unordered_map<string, unordered_set<string>> getEntityOneRelationships()
+                    +unordered_map<string, unordered_set<string>> getEntityTwoRelationships()
+                }
+
+                class StatementEntityRelationship {
+                    -vector<pair<int, string>> statementEntityRelationships
+                    +unordered_map<int, unordered_set<string>> getStatementRelationships()
+                    +unordered_map<string, unordered_set<int>> getEntityRelationships()
+                }
+
+                class StatementStatementRelationship {
+                    -vector<pair<int, int>> statementStatementRelationships
+                    +unordered_map<int, unordered_set<int>> getStatementOneRelationships()
+                    +unordered_map<int, unordered_set<int>> getStatementTwoRelationships()
+                }
+            }
+
+            class AssignPatternVisitor extends IVisitsStatement, IVisitsVariable, StatementEntityRelationship {
+                -shared_ptr<IPatternReader> patternReader
+                -bool hasWildcard
+                -vector<string> postfixExpression
+                +AssignPatternVisitor(shared_ptr<IPatternReader> patternReader)
+                +void setPatternState(bool wildcard, vector<string> expression)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            AssignPatternVisitor -- IAssignPatternReader
+
+            class IfPatternVisitor extends IVisitsStatement, IVisitsVariable, StatementEntityRelationship {
+                -shared_ptr<IIfPatternReader> patternReader
+                +IfPatternVisitor(shared_ptr<IIfPatternReader> patternReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            IfPatternVisitor -- IIfPatternReader
+
+            class WhilePatternVisitor extends IVisitsStatement, IVisitsVariable, StatementEntityRelationship {
+                -shared_ptr<IWhilePatternReader> patternReader
+                +WhilePatternVisitor(shared_ptr<IWhilePatternReader> patternReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            WhilePatternVisitor -- IWhilePatternReader
+
+            class AffectsVisitor extends IVisitsStatement, StatementStatementRelationship {
+                -shared_ptr<IAffectsReader> affectsReader
+                -bool queryForAffects
+                +AffectsVisitor(shared_ptr<IAffectsReader> nextReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void setQueryState(bool state)
+            }
+            AffectsVisitor -- IAffectsReader
+
+            class CallsVisitor extends IVisitsProcedure, EntityEntityRelationship {
+                -bool onlyQueryImmediate
+                -bool queryForCalled
+                -shared_ptr<ICallsReader> callsReader
+                -unordered_set<string> queryBasedOnState(string procedureName)
+                +CallsVisitor(shared_ptr<ICallsReader> callsReader)
+                +void visit(shared_ptr<ProcedureSynonym> procedure)
+                +void visit(shared_ptr<ProcedureName> procedure)
+                +void visit(shared_ptr<ProcedureWildcard> procedure)
+                +void setImmediateState(bool onlyImmediate)
+                +void setCalledQueryState(bool queryCalled)
+            }
+            CallsVisitor -- ICallsReader
+
+            class FollowsVisitor extends IVisitsStatement, StatementStatementRelationship {
+                -bool onlyQueryImmediate
+                -bool queryForFollows
+                -shared_ptr<IFollowsReader> followsReader
+                +unordered_set<int> queryBasedOnState(int statementNumber)
+                +FollowsVisitor(shared_ptr<IFollowsReader> followsReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard statement)
+                +void setImmediateState(bool onlyImmediate)
+                +void setFollowsQueryState(bool queryFollows)
+            }
+            FollowsVisitor -- IFollowsReader
+
+            class ModifiesProcedureVisitor extends IVisitsProcedure, IVisitsVariable,  EntityEntityRelationship {
+                -shared_ptr<IModifiesProcedureReader> modifiesReader
+                +ModifiesProcedureVisitor(shared_ptr<IModifiesProcedureReader> modifiesReader)
+                +void visit(shared_ptr<ProcedureSynonym> statement)
+                +void visit(shared_ptr<ProcedureName> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            ModifiesProcedureVisitor -- IModifiesProcedureReader
+
+            class ModifiesStatementVisitor extends IVisitsStatement, IVisitsVariable,  StatementEntityRelationship {
+                -shared_ptr<IModifiesStatementReader> modifiesReader
+                +ModifiesStatementVisitor(shared_ptr<IModifiesStatementReader> modifiesReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            ModifiesStatementVisitor -- IModifiesStatementReader
+
+            class NextVisitor extends IVisitsStatement, StatementStatementRelationship {
+                -bool onlyQueryImmediate
+                -bool queryForNext
+                -shared_ptr<INextReader> nextReader
+                -unordered_set<int> queryBasedOnState(int statementNumber)
+                -void queryAllNext(int statementNumber, unordered_set<int> visitedStatementsPtr)
+                +NextVisitor(shared_ptr<INextReader> nextReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void setImmediateState(bool onlyImmediate)
+                +void setNextQueryState(bool queryNext)
+            }
+            NextVisitor -- INextReader
+
+            class ParentVisitor extends IVisitsStatement, StatementStatementRelationship {
+                -bool onlyQueryImmediate
+                -bool queryForParents
+                -shared_ptr<IParentReader> parentReader
+                -unordered_set<int> queryBasedOnState(int statementNumber)
+                +ParentVisitor(shared_ptr<IParentReader> parentReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void setImmediateState(bool onlyImmediate)
+                +void setParentQueryState(bool queryParents)
+            }
+            ParentVisitor -- IParentReader
+
+            class UsesProcedureVisitor extends IVisitsProcedure, IVisitsVariable, EntityEntityRelationship {
+                -shared_ptr<IUsesProcedureReader> usesReader
+                +UsesProcedureVisitor(shared_ptr<IUsesProcedureReader> usesReader)
+                +void visit(shared_ptr<ProcedureSynonym> statement)
+                +void visit(shared_ptr<ProcedureName> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            UsesProcedureVisitor -- IUsesProcedureReader
+
+            class UsesStatementVisitor extends IVisitsStatement, IVisitsVariable, StatementEntityRelationship {
+                -shared_ptr<IUsesStatementReader> usesReader
+                +UsesStatementVisitor(shared_ptr<IUsesStatementReader> usesReader)
+                +void visit(shared_ptr<StatementTypeSynonym> statement)
+                +void visit(shared_ptr<StatementLineNumber> statement)
+                +void visit(shared_ptr<StatementWildcard> statement)
+                +void visit(shared_ptr<VariableSynonym> variable)
+                +void visit(shared_ptr<VariableName> variable)
+                +void visit(shared_ptr<VariableWildcard> variable)
+            }
+            UsesStatementVisitor -- IUsesStatementReader
+
+            class WithVisitor {
+                -bool isNegated
+                +void setNegated(bool negation)
+                +bool visit(shared_ptr<ConstantWithRef> ref, shared_ptr<WithRef> other)
+                +bool visit(shared_ptr<EntityAttributeRef> ref, shared_ptr<WithRef> other)
+                +bool visit(shared_ptr<StatementAttributeRef> ref, shared_ptr<WithRef> other)
+            }
+        }
+
+        QueryEvaluator *-- IVisitsSynonym
+    }
+
+    package query_extractor {
+        class QueryExtractor {
+    		-vector<shared_ptr<TokenGroup>> tokenGroups
+    		-TokenGroupExtractor tokenGroupVisitor
+    		+QueryExtractor(vector<shared_ptr<TokenGroup>> tokenGroups)
+    		+Query extractQuery()
+        }
+
+        class TokenGroupExtractor {
+            -unordered_map<string, shared_ptr<ISynonym>> synonymMap
+            -shared_ptr<ISynonym> createSynonym(string type, string name)
+            -shared_ptr<ISelectable> createSelectable(shared_ptr<ISynonym> synonym, string selectionType)
+            -shared_ptr<WithRef> createWithRef(string ref, string attrRef, bool refIsInteger)
+            +void visit(shared_ptr<DeclarationTokenGroup> declarationTokenGroup, Query q)
+            +void visit(shared_ptr<SelectTokenGroup> selectTokenGroup, Query q)
+            +void visit(shared_ptr<PatternTokenGroup> patternTokenGroup, Query q)
+            +void visit(shared_ptr<UsesTokenGroup> usesTokenGroup, Query q)
+            +void visit(shared_ptr<ModifiesTokenGroup> modifiesTokenGroup, Query q)
+            +void visit(shared_ptr<FollowsTokenGroup> followsTokenGroup, Query q)
+            +void visit(shared_ptr<ParentTokenGroup> parentTokenGroup, Query q)
+            +void visit(shared_ptr<CallsTokenGroup> callsTokenGroup, Query q)
+            +void visit(shared_ptr<NextTokenGroup> nextTokenGroup, Query q)
+            +void visit(shared_ptr<WithTokenGroup> withTokenGroup, Query q)
+            +void visit(shared_ptr<AffectsTokenGroup> affectsTokenGroup, Query q)
+            +void visit(shared_ptr<InvalidClauseTokenGroup> invalidTokenGroup, Query q)
+        }
+
+        QueryExtractor *-- TokenGroup
+        QueryExtractor *-- TokenGroupExtractor
+    }
+
+    package tokenizer {
+        class TokenSplitter {
+            -shared_ptr<Token> suchToken
+            -shared_ptr<Token> thatToken
+            -shared_ptr<Token> patternToken
+            -shared_ptr<Token> withToken
+            -unordered_set<string> endWithClauseStrings
+            -vector<TokenList> splitIntoDeclarationsAndSelect(TokenList queryTokens)
+            -vector<DeclarationTokenGroup> splitDeclarations(TokenList declarationTokens)
+            -SelectTokenGroup getSelectTokens(TokenList selectAndClauseTokens)
+            -vector<shared_ptr<ClauseTokenGroup>> getClauseTokens(TokenList selectAndClauseTokens, int numberOfSelectTokens)
+            +vector<shared_ptr<TokenGroup> > splitIntoTokenGroups(TokenList queryTokens)
+        }
+
+	    enum TokenGroupType {
+            SuchThat, Pattern, With, None
+        }
+
+        class QueryTokenizer extends Tokenizer {
+            +QueryTokenizer(istream* stream)
+        }
+
+        package token_groups {
+            class TokenGroup {
+                #vector<shared_ptr<Token>> tokenList
+                +TokenGroup()
+                +TokenGroup(vector<shared_ptr<Token>> tokenList)
+                +int getSize()
+                +vector<string> getStringifiedTokens()
+                +{virtual} bool validateSyntax(TokenGroupSyntaxValidator v)
+                +{virtual} bool validateSemantics(TokenGroupSemanticValidator v)
+                +{virtual} void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class DeclarationTokenGroup extends TokenGroup {
+    			+string type
+    			+vector<string> synonyms
+				+DeclarationTokenGroup(vector<shared_ptr<Token>> tokenList)
+    			+bool validateSyntax(TokenGroupSyntaxValidator v)
+    			+bool validateSemantics(TokenGroupSemanticValidator v)
+    			+void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class SelectTokenGroup extends TokenGroup {
+    			+bool isBOOLEAN
+                +vector<string> synonyms
+                +vector<pair<string, string>> synonymsAndAttributes
+                +SelectTokenGroup() = default
+                +SelectTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class ClauseTokenGroup extends TokenGroup {
+                +ClauseTokenGroup(vector<shared_ptr<Token>> tokenList)
+                +bool isNegated{}
+            }
+
+            class InvalidClauseTokenGroup extends ClauseTokenGroup {
+                +InvalidClauseTokenGroup(vector<shared_ptr<Token>> tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class PatternTokenGroup extends ClauseTokenGroup {
+                +string type
+                +string statement
+                +string entity
+                +string expression
+                +bool secondArgumentIsWildcard{}
+                +bool thirdArgumentIsWildcard{}
+                +bool hasWildcard{}
+                +bool hasThirdExpression{}
+                +PatternTokenGroup(vector<shared_ptr<Token>> tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class WithTokenGroup extends ClauseTokenGroup {
+                +string firstRef
+                +string firstRefAttrName
+                +bool isFirstRefInteger
+                +string secondRef
+                +string secondRefAttrName
+                +bool isSecondRefInteger
+                +WithTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class AffectsTokenGroup extends SuchThatTokenGroup {
+                +AffectsTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class CallsTokenGroup extends SuchThatTokenGroup {
+                +CallsTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class FollowsTokenGroup extends SuchThatTokenGroup {
+                +FollowsTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class ModifiesTokenGroup extends SuchThatTokenGroup {
+                +ModifiesTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class NextTokenGroup extends SuchThatTokenGroup {
+                +NextTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class ParentTokenGroup extends SuchThatTokenGroup {
+                +ParentTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+
+            class SuchThatTokenGroup extends ClauseTokenGroup  {
+                +string type
+                +string arg1
+                +string arg2
+                +bool arg1IsWildcard{}
+                +bool arg1IsString{}
+                +bool arg1IsNumber{}
+                +bool arg1IsSynonym{}
+                +bool arg2IsWildcard{}
+                +bool arg2IsString{}
+                +bool arg2IsNumber{}
+                +bool arg2IsSynonym{}
+                +SuchThatTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +void setAttributes()
+            }
+
+            class UsesTokenGroup extends SuchThatTokenGroup {
+                +UsesTokenGroup(vector<shared_ptr<Token> > tokenList)
+                +bool validateSyntax(TokenGroupSyntaxValidator v)
+                +bool validateSemantics(TokenGroupSemanticValidator v)
+                +void buildQuery(TokenGroupExtractor v, Query q)
+            }
+        }
+        TokenSplitter -- TokenGroupType
+        TokenSplitter -- TokenGroup
+    }
+
+    package validator {
+        class QPSValidator extends SyntaxValidator  {
+            -vector<shared_ptr<TokenGroup>> tokenGroups
+            -TokenGroupSyntaxValidator syntaxValidator
+            -TokenGroupSemanticValidator semanticValidator
+            +QPSValidator(vector<shared_ptr<TokenGroup>> tokenGroups)
+            +string validate()
+        }
+
+        class TokenGroupSemanticValidator extends SyntaxValidator {
+            -unordered_map<string, vector<SynonymType>> designEntityList
+            -unordered_map<string, vector<AttributeType>> attributeMap
+            -unordered_map<string, vector<SynonymType>> synonymMap
+            -unordered_map<string, string> synonymMapWithType
+            -bool validateSynonymType(string ref, SynonymType requiredType)
+            -bool validateSynonymAttribute(string synonymType, string attributeType)
+            -bool validateStatementStatement(shared_ptr<SuchThatTokenGroup> suchThatTokenGroup)
+            -bool validateModifiesAndUses(shared_ptr<SuchThatTokenGroup> suchThatTokenGroup)
+            -bool validateAssignPattern(shared_ptr<PatternTokenGroup> patternTokenGroup)
+            -bool validateIfPattern(shared_ptr<PatternTokenGroup> patternTokenGroup)
+            -bool validateWhilePattern(shared_ptr<PatternTokenGroup> patternTokenGroup)
+            -bool findType(AttributeTypeGeneric refOneRes, string ref, string refAttrName, bool isRefInteger)
+            +TokenGroupSemanticValidator()
+            +bool visit(shared_ptr<DeclarationTokenGroup> declarationTokenGroup)
+            +bool visit(shared_ptr<SelectTokenGroup> selectTokenGroup)
+            +bool visit(shared_ptr<PatternTokenGroup> patternTokenGroup)
+            +bool visit(shared_ptr<FollowsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<UsesTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<ModifiesTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<ParentTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<CallsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<NextTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<AffectsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<WithTokenGroup> withTokenGroup)
+            +bool visit(shared_ptr<InvalidClauseTokenGroup> invalidTokenGroup)
+        }
+
+        class TokenGroupSyntaxValidator extends SyntaxValidator {
+            -bool hasBOOLEAN
+            -unordered_set<string> designEntityList
+            -unordered_set<string> relRefList
+            -bool safelyAdvanceIterator(vector<string>::iterator it, vector<string>::iterator end)
+            -bool readArgument(vector<string>::iterator it, vector<string>::iterator end, string res)
+            -bool validateQuotationIdent(string ref)
+            -bool validateStatementRefs(string ref)
+            -bool validateEntityRefs(string ref)
+            -bool validateUsesModifiesRef1(string refOne)
+            -bool validateUsesAndModifies(string refOne, string refTwo)
+            -bool validateSuchThatRelationship(vector<string>::iterator it, vector<string>::iterator end, string relRef, string refOne, string refTwo)
+            -bool validateSynonymAttribute(vector<string, allocator<string> >::iterator it, vector<string, allocator<string> >::iterator end, string attrName)
+            -bool validateRef(vector<string, allocator<string>>::iterator it, vector<string, allocator<string>>::iterator end, string ref, string refAttrName, bool isRefInteger)
+            -bool visitUsesAndModifies(shared_ptr<SuchThatTokenGroup> suchThatTokenGroup)
+            -bool visitParentFollowsNextAffects(shared_ptr<SuchThatTokenGroup> suchThatTokenGroup)
+            +TokenGroupSyntaxValidator()
+            +bool visit(shared_ptr<DeclarationTokenGroup> declarationTokenGroup)
+            +bool visit(shared_ptr<SelectTokenGroup> selectTokenGroup)
+            +bool visit(shared_ptr<PatternTokenGroup> patternTokenGroup)
+            +bool visit(shared_ptr<UsesTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<ModifiesTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<ParentTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<FollowsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<CallsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<NextTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<AffectsTokenGroup> suchThatTokenGroup)
+            +bool visit(shared_ptr<WithTokenGroup> withTokenGroup)
+            +bool visit(shared_ptr<InvalidClauseTokenGroup> invalidTokenGroup)
+        }
+
+        enum SynonymType {
+            VARIABLE, PROCEDURE, STATEMENT, ASSIGNMENT
+        }
+
+        enum AttributeType {
+            STATEMENT_NUMBER, VARIABLE_NAME, PROCEDURE_NAME, VALUE
+        }
+
+        enum AttributeTypeGeneric {
+            INTEGER, NAME
+        }
+
+        TokenGroupSemanticValidator -- SynonymType
+        TokenGroupSemanticValidator -- AttributeType
+        TokenGroupSemanticValidator -- AttributeTypeGeneric
+        QPSValidator *-- TokenGroup
+        QPSValidator *-- TokenGroupSyntaxValidator
+        QPSValidator *-- TokenGroupSemanticValidator
+    }
+    
+    QPS *-- QueryEvaluator
+    QPS *-- TokenSplitter
+    QPS *-- QPSValidator
+    QPS *-- QueryExtractor
+}
+
+@enduml

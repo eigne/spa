@@ -1,0 +1,22 @@
+procedure main {
+    x = 0;
+    while (x > 1) {
+        if (x > 2) then {
+            read y;
+            call one;
+        } else {
+            read z;
+            call two;
+        }
+    }
+ }
+
+ procedure one {
+     read a;
+     call two;
+ }
+
+ procedure two {
+     read b;
+ }
+

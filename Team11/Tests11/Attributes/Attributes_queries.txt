@@ -1,0 +1,55 @@
+1 - Select variables
+variable v;
+Select v.varName
+x, y, z, cumcum, yoMAMA, soFat, hump, cum, tum, FuckThis, KYS, print, r, h, lol
+5000
+2 - Select constants
+constant c;
+Select c.value
+1, 2, 27, 89
+5000
+3 - Select procedure
+procedure p;
+Select p.procName
+procedure, LmaO69HEHE
+5000
+4 - Select if statements
+if i;
+Select i.stmt#
+7
+5000
+5 - Select assign statements
+assign a;
+Select a.stmt#
+4, 8, 9, 14
+5000
+6 - Select read statements
+read r;
+Select r.stmt#
+2, 13
+5000
+7 - Select print statements
+print pn;
+Select pn.stmt#
+3, 6, 10, 11, 12
+5000
+8 - Select while statements
+while w;
+Select w.stmt#
+5
+5000
+9 - Select statements
+stmt s;
+Select s.stmt#
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+5000
+10 - Select attr_ref in tuples -- stmt#
+read r; print p;
+Select <r. stmt#, p .stmt#>
+2 3, 2 6, 2 10, 2 11, 2 12, 13 3, 13 6, 13 10, 13 11, 13 12
+5000
+11 - Select attr_ref in tuples -- varName
+read r;
+Select <    r.varName  , r.stmt# >
+x 2, r 13
+5000

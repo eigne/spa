@@ -1,0 +1,135 @@
+1 - Select while
+while w;
+Select w
+3, 21, 26, 40, 47, 50, 55, 57
+5000
+2 - Select while, pattern while (_, _)
+while w;
+Select w pattern w(_, _)
+3, 21, 26, 40, 47, 50, 55, 57
+5000
+3 - Select while, pattern while (variable, _)
+while w; variable v;
+Select w pattern w(v, _)
+3, 21, 26, 40, 47, 50, 55, 57
+5000
+4 - Select tuple while, variable, pattern w(v, _)
+while w; variable v;
+Select <w, v> pattern w(v, _)
+3 c3, 3 d4, 21 q17, 21 r18, 26 s19, 26 t20, 40 c3, 47 wqd909, 47 qiwd2, 50 cumcum, 50 cum, 55 dagger, 57 fUcKThiS
+5000
+5 - Select tuple while, variable, pattern w(v, _), such that Uses
+while w; variable v;
+Select <w, v> pattern w(v, _) such that Uses(21, v)
+21 q17, 21 r18
+5000
+6 - Select while, pattern while (stmt, _) [invalid]
+while w; stmt s;
+Select w pattern w(s, _)
+SemanticError
+5000
+7 - Select while, pattern while (read, _) [invalid]
+while w; read r;
+Select w pattern w(r, _)
+SemanticError
+5000
+8 - Select while, pattern while (print, _) [invalid]
+while w; print pn;
+Select w pattern w(pn, _)
+SemanticError
+5000
+9 - Select while, pattern while (assign, _) [invalid]
+while w; assign a;
+Select w pattern w(a, _)
+SemanticError
+5000
+10 - Select while, pattern while (call, _) [invalid]
+while w; call c;
+Select w pattern w(c, _)
+SemanticError
+5000
+11 - Select while, pattern while (if, _) [invalid]
+while w;
+Select w pattern w(i, _)
+SemanticError
+5000
+12 - Select while, pattern while (while, _) [invalid]
+while w; while w;
+Select w pattern w(w, _)
+SemanticError
+5000
+13 - Select while, pattern while (constant, _) [invalid]
+while w; constant cn;
+Select w pattern w(cn, _)
+SemanticError
+5000
+14 - Select while, pattern while (procedure, _) [invalid]
+while w; procedure p;
+Select w pattern w(p, _)
+SemanticError
+5000
+15 - Select while, pattern while (_, stmt) [invalid]
+while w; stmt s;
+Select w pattern w(_, s)
+SyntaxError
+5000
+16 - Select while, pattern while (_, read) [invalid]
+while w; read r;
+Select w pattern w(_, r)
+SyntaxError
+5000
+17 - Select while, pattern while (_, print) [invalid]
+while w; print pn;
+Select w pattern w(_, pn)
+SyntaxError
+5000
+18 - Select while, pattern while (_, assign) [invalid]
+while w; assign a;
+Select w pattern w(_, a)
+SyntaxError
+5000
+19 - Select while, pattern while (_, call) [invalid]
+while w; call c;
+Select w pattern w(_, c)
+SyntaxError
+5000
+20 - Select while, pattern while (_, if) [invalid]
+while w;
+Select w pattern w(_, i)
+SyntaxError
+5000
+21 - Select while, pattern while (_, while) [invalid]
+while w; while w;
+Select w pattern w(_, w)
+SyntaxError
+5000
+22 - Select while, pattern while (_, constant) [invalid]
+while w; constant cn;
+Select w pattern w(_, cn)
+SyntaxError
+5000
+23 - Select while, pattern while (_, variable) [invalid]
+while w; variable v;
+Select w pattern w(_, v)
+SyntaxError
+5000
+24 - Select while, pattern while (_, procedure) [invalid]
+while w; procedure p;
+Select w pattern w(_, p)
+SyntaxError
+5000
+25 - Select tuple, while, variable pattern w(v, _), such that Modifies
+while w; variable v;
+Select w pattern w(v, _) such that Modifies(4, v)
+3
+5000
+26 - Select BOOLEAN pattern while(variable_name, _) (positive)
+while w;
+Select BOOLEAN pattern w("r18", _)
+TRUE
+5000
+27 - Select BOOLEAN pattern while(variable_name, _) (negative)
+while w;
+Select BOOLEAN pattern w("sean", _)
+FALSE
+5000

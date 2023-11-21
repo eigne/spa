@@ -1,0 +1,55 @@
+procedure begin {
+    call helloWorld123;
+    a = 5;
+    hehe = haha;
+}
+
+procedure UsesTest123 {
+	print p1;
+	read r2;
+    call helloWorld123;
+
+	if ((i3 == a3 + B3) && (i3 + b3 * cAt3 <= 5 + HErE3)) then {
+        call begin; 
+        ASsign4 = 5;
+        while (x5 == 5) {
+            procedure = a6 + b6;
+        }
+        print p7;
+    } else {
+        call begin;
+        read r8;
+        if (x9 != 5) then {
+			print p10;
+            call helloWorld123;
+            n11 = 0 + m11 * 902;
+		} else {
+            while (x12 > 128 + a12 + m11) {
+                call begin;
+				print p13;
+				read r14;
+			}
+
+            read r15;
+		}
+    }
+
+    while (x16 >= a16 + l16 * 60 * (5 + p16)) {
+        call helloWorld123;
+		read = a17 + b17 + b6;
+
+        if (x18 < p18) then {
+            print p19;
+        } else {
+            print p20;
+        }
+	}
+
+    read r21;
+    procedure = 10;
+}
+
+procedure helloWorld123 {
+    print p;
+    read r;
+}

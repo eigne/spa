@@ -1,0 +1,320 @@
+1 - Uses(s, v)
+stmt s; variable v;
+Select s such that Uses(s, v)
+1, 3, 4, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 32
+5000
+2 - Uses(s, v)
+stmt s; variable v;
+Select v such that Uses(s, v)
+B3, HErE3, a12, a16, a17, a3, a6, b17, b3, b6, cAt3, haha, i3, l16, m11, p, p1, p10, p13, p16, p18, p19, p20, p7, x12, x16, x18, x5, x9
+5000
+3 - Uses(s, var): no nest
+stmt s;
+Select s such that Uses(s, "p1")
+4
+5000
+4 - Uses(s, var): 1 nest
+stmt s;
+Select s such that Uses(s, "p7")
+7, 12
+5000
+5 - Uses(s, var): 2 nest
+stmt s;
+Select s such that Uses(s, "a6")
+7, 10, 11
+5000
+6 - Uses(s, var): >= 3 nest
+stmt s;
+Select s such that Uses(s, "p13")
+7, 15, 19, 21
+5000
+7 - Uses(s, _)
+stmt s;
+Select s such that Uses(s, _)
+1, 3, 4, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 32
+5000
+8 - Uses(a, v)
+assign a; variable v;
+Select a such that Uses(a, v)
+3, 11, 18, 26
+5000
+9 - Uses(a, v)
+assign a; variable v;
+Select v such that Uses(a, v)
+a17, a6, b17, b6, haha, m11
+5000
+10 - Uses(a, var): same variable used multiple times
+assign a;
+Select a such that Uses(a, "b6")
+11, 26
+5000
+11 - Uses(a, var): variable used once
+assign a;
+Select a such that Uses(a, "a6")
+11
+5000
+12 - Uses(a, _)
+assign a;
+Select a such that Uses(a, _)
+3, 11, 18, 26
+5000
+13 - Uses(re, v)
+read re; variable v;
+Select re such that Uses(re, v)
+
+5000
+14 - Uses(re, v)
+read re; variable v;
+Select v such that Uses(re, v)
+
+5000
+15 - Uses(re, var)
+read re;
+Select re such that Uses(re, "p13")
+
+5000
+16 - Uses(re, _)
+read re;
+Select re such that Uses(re, _)
+
+5000
+17 - Uses(pn, v)
+print pn; variable v;
+Select pn such that Uses(pn, v)
+4, 12, 16, 21, 28, 29, 32
+5000
+18 - Uses(pn, v)
+print pn; variable v;
+Select v such that Uses(pn, v)
+p, p1, p10, p13, p19, p20, p7
+5000
+19 - Uses(pn, var)
+print pn;
+Select pn such that Uses(pn, "p1")
+4
+5000
+20 - Uses(pn, _)
+print pn;
+Select pn such that Uses(pn, _)
+4, 12, 16, 21, 28, 29, 32
+5000
+21 - Uses(if, v)
+if if; variable v;
+Select if such that Uses(if, v)
+7, 15, 27
+5000
+22 - Uses(if, v)
+if if; variable v;
+Select v such that Uses(if, v)
+B3, HErE3, a12, a3, a6, b3, b6, cAt3, haha, i3, m11, p, p10, p13, p18, p19, p20, p7, x12, x18, x5, x9
+5000
+23 - Uses(if, var)
+if if;
+Select if such that Uses(if, "p")
+7, 15
+5000
+24 - Uses(if, _)
+if if;
+Select if such that Uses(if, _)
+7, 15, 27
+5000
+25 - Uses(wh, v)
+while wh; variable v;
+Select wh such that Uses(wh, v)
+10, 19, 24
+5000
+26 - Uses(wh, v)
+while wh; variable v;
+Select v such that Uses(wh, v)
+a12, a16, a17, a6, b17, b6, haha, l16, m11, p, p13, p16, p18, p19, p20, x12, x16, x18, x5
+5000
+27 - Uses(wh, var)
+while wh;
+Select wh such that Uses(wh, "p")
+19, 24
+5000
+28 - Uses(wh, _)
+while wh;
+Select wh such that Uses(wh, _)
+10, 19, 24
+5000
+29 - Uses(stmt, v): container statement
+variable v;
+Select v such that Uses(24, v)
+x16, a16, l16, p16, p, a17, b17, b6, x18, p18, p19, p20
+5000
+30 - Uses(stmt, var)
+variable v;
+Select v such that Uses(24, "a17")
+ASsign4, B3, HErE3, a, a12, a16, a17, a3, a6, b17, b3, b6, cAt3, haha, hehe, i3, l16, m11, n11, p, p1, p10, p13, p16, p18, p19, p20, p7, procedure, r, r14, r15, r2, r21, r8, read, x12, x16, x18, x5, x9
+5000
+31 - Uses(stmt, v): regular statement
+variable v;
+Select v such that Uses(21, v)
+p13
+5000
+32 - Uses(stmt, _)
+variable v;
+Select v such that Uses(23, _)
+none
+5000
+33 - Uses(stmt, NonExistentVar)
+stmt s;
+Select s such that Uses(s, "NonExistent")
+
+5000
+34 - Uses(a, NonExistentVar)
+assign a;
+Select a such that Uses(a, "NonExistent")
+
+5000
+35 - Uses(re, NonExistentVar)
+read re;
+Select re such that Uses(re, "NonExistent")
+
+5000
+36 - Uses(pn, NonExistentVar)
+print pn;
+Select pn such that Uses(pn, "NonExistent")
+
+5000
+37 - Uses(if, NonExistentVar)
+if if;
+Select if such that Uses(if, "NonExistent")
+
+5000
+38 - Uses(wh, NonExistentVar)
+while wh;
+Select wh such that Uses(wh, "NonExistent")
+
+5000
+39 - Uses(_, v)
+variable v;
+Select v such that Uses(_, v)
+SemanticError
+5000
+40 - Uses(_, var)
+variable v;
+Select v such that Uses(_, "procedure")
+SemanticError
+5000
+41 - Uses(_, _)
+variable v;
+Select v such that Uses(_, _)
+SemanticError
+5000
+42 - Uses(p, v)
+procedure p; variable v;
+Select p such that Uses(p, v)
+UsesTest123, begin, helloWorld123
+5000
+43 - Uses(p, var)
+procedure p;
+Select p such that Uses(p, "x5")
+UsesTest123
+5000
+44 - Uses(p, _)
+procedure p;
+Select p such that Uses(p, _)
+UsesTest123, begin, helloWorld123
+5000
+45 - Uses(p, NonExistentVar)
+procedure p;
+Select p such that Uses(p, "NonExistent")
+
+5000
+46 - Uses(_, p)
+procedure p;
+Select p such that Uses(_, p)
+SemanticError
+5000
+47 - Uses(procName, v)
+variable v;
+Select v such that Uses("UsesTest123", v)
+B3, HErE3, a12, a16, a17, a3, a6, b17, b3, b6, cAt3, haha, i3, l16, m11, p, p1, p10, p13, p16, p18, p19, p20, p7, x12, x16, x18, x5, x9
+5000
+48 - Uses(procName, var)
+stmt s;
+Select s such that Uses("UsesTest123", "p20")
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33
+5000
+49 - Uses(procName, _)
+stmt s;
+Select s such that Uses("UsesTest123", _)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33
+5000
+50 - Weird synonyms: print synonym is Uses
+print Uses;
+Select Uses such that Uses(Uses, "p10")
+16
+5000
+51 - Weird case: spaces and tabs in queries
+print			       pn			; variable    v                  ; 
+Select					pn				such that		Uses(		pn	,    v				)
+4, 12, 16, 21, 28, 29, 32
+5000
+52 - Weird case: new lines
+print pn; variable v
+			;		Select pn such that    	Uses(pn, v)
+4, 12, 16, 21, 28, 29, 32
+5000
+53 - Syntax error: Missing semicolon
+print pn variable v
+Select pn such that Uses(pn, v)
+SyntaxError
+5000
+54 - Syntax error: synonym start with numbers
+print pn; variable 1v;
+Select pn such that Uses(pn, 1v)
+SyntaxError
+5000
+55 - Semantic error: synonym not declared
+print pn; variable v;
+Select pn such that Uses(pn, var)
+SemanticError
+5000
+56 - Semantic error: same synonym declared twice: different entities
+print pn; variable pn;
+Select pn such that Uses(pn, pn)
+SemanticError
+5000
+57 - Semantic error: same synonym declared twice: same entity, different place
+print pn; variable v; variable v;
+Select pn such that Uses(pn, v)
+SemanticError
+5000
+58 - Semantic error: arg2 synonym but not variable synonym
+print pn; while v;
+Select pn such that Uses(pn, v)
+SemanticError
+5000
+59 - Weird case: weird synonym names
+print ACS3203abc; variable nAnI123kOrE;
+Select ACS3203abc such that Uses(ACS3203abc, nAnI123kOrE)
+4, 12, 16, 21, 28, 29, 32
+5000
+60 - Weird case: unused synonym
+assign a; variable v; print pn;
+Select pn such that Uses(pn, v)
+4, 12, 16, 21, 28, 29, 32
+5000
+61 - Weird case: synonym name same as entity
+print print; variable variable;
+Select print such that Uses(print, variable)
+4, 12, 16, 21, 28, 29, 32
+5000
+62 - Uses(call, _)
+call call;
+Select call such that Uses(call, _)
+1, 13, 17, 20, 25, 6, 8
+5000
+63 - Uses(call, var)
+call call;
+Select call such that Uses(call, "haha")
+8, 13, 20
+5000
+64 - Uses(call, variable)
+call call; variable v;
+Select call such that Uses(call, v)
+1, 13, 17, 20, 25, 6, 8
+5000

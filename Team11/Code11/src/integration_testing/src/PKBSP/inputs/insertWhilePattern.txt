@@ -1,0 +1,13 @@
+procedure main {
+    while ((x == y) || (g != h)) {
+        y = 1;
+    }
+
+    while (a == b) {
+        while (c != d) {
+            while (e != f) {
+                i =1;
+            }
+        }
+    }
+}

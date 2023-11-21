@@ -1,0 +1,135 @@
+1 - Select while
+while w;
+Select w
+3, 21, 26, 40, 47, 50, 55, 57, 61
+5000
+2 - Select while, pattern not while (_, _)
+while w;
+Select w pattern not w(_, _)
+61
+5000
+3 - Select while, pattern not while (variable, _)
+while w; variable v;
+Select w pattern not w(v, _)
+3, 21, 26, 40, 47, 50, 55, 57, 61
+5000
+4 - Select tuple while, variable, pattern not w(v, _)
+while w; variable v;
+Select <w, v> pattern not w(v, _)
+3 KMS, 3 NOW, 3 WGT, 3 YOLOsw4gg3r, 3 a, 3 a1, 3 b, 3 b2, 3 c, 3 clear, 3 cs3203, 3 cum, 3 cumcum, 3 d, 3 dagger, 3 dw, 3 dwl9, 3 e5, 3 f, 3 f6, 3 fUcKThiS, 3 g, 3 g6, 3 g7, 3 gggggg, 3 h212, 3 h8, 3 hecarim, 3 honestlyFuckThisModule3203ShittyMod, 3 i9, 3 iWant2DIE, 3 j10, 3 k11, 3 l, 3 l12, 3 m13, 3 ndf, 3 nownownow696969, 3 owadio, 3 p2rocedure, 3 procedur1e, 3 q17, 3 qiwd2, 3 r, 3 r18, 3 read, 3 s19, 3 siuuuu, 3 t20, 3 test, 3 u21, 3 unhinged, 3 v22, 3 w23, 3 wantTocriiii, 3 wndio, 3 wqd, 3 wqd909, 3 x24, 3 x38, 3 y25, 3 z10, 3 z26, 21 KMS, 21 NOW, 21 WGT, 21 YOLOsw4gg3r, 21 a, 21 a1, 21 b, 21 b2, 21 c, 21 c3, 21 clear, 21 cs3203, 21 cum, 21 cumcum, 21 d, 21 d4, 21 dagger, 21 dw, 21 dwl9, 21 e5, 21 f, 21 f6, 21 fUcKThiS, 21 g, 21 g6, 21 g7, 21 gggggg, 21 h212, 21 h8, 21 hecarim, 21 honestlyFuckThisModule3203ShittyMod, 21 i9, 21 iWant2DIE, 21 j10, 21 k11, 21 l, 21 l12, 21 m13, 21 ndf, 21 nownownow696969, 21 owadio, 21 p2rocedure, 21 procedur1e, 21 qiwd2, 21 r, 21 read, 21 s19, 21 siuuuu, 21 t20, 21 test, 21 u21, 21 unhinged, 21 v22, 21 w23, 21 wantTocriiii, 21 wndio, 21 wqd, 21 wqd909, 21 x24, 21 x38, 21 y25, 21 z10, 21 z26, 26 KMS, 26 NOW, 26 WGT, 26 YOLOsw4gg3r, 26 a, 26 a1, 26 b, 26 b2, 26 c, 26 c3, 26 clear, 26 cs3203, 26 cum, 26 cumcum, 26 d, 26 d4, 26 dagger, 26 dw, 26 dwl9, 26 e5, 26 f, 26 f6, 26 fUcKThiS, 26 g, 26 g6, 26 g7, 26 gggggg, 26 h212, 26 h8, 26 hecarim, 26 honestlyFuckThisModule3203ShittyMod, 26 i9, 26 iWant2DIE, 26 j10, 26 k11, 26 l, 26 l12, 26 m13, 26 ndf, 26 nownownow696969, 26 owadio, 26 p2rocedure, 26 procedur1e, 26 q17, 26 qiwd2, 26 r, 26 r18, 26 read, 26 siuuuu, 26 test, 26 u21, 26 unhinged, 26 v22, 26 w23, 26 wantTocriiii, 26 wndio, 26 wqd, 26 wqd909, 26 x24, 26 x38, 26 y25, 26 z10, 26 z26, 40 KMS, 40 NOW, 40 WGT, 40 YOLOsw4gg3r, 40 a, 40 a1, 40 b, 40 b2, 40 c, 40 clear, 40 cs3203, 40 cum, 40 cumcum, 40 d, 40 d4, 40 dagger, 40 dw, 40 dwl9, 40 e5, 40 f, 40 f6, 40 fUcKThiS, 40 g, 40 g6, 40 g7, 40 gggggg, 40 h212, 40 h8, 40 hecarim, 40 honestlyFuckThisModule3203ShittyMod, 40 i9, 40 iWant2DIE, 40 j10, 40 k11, 40 l, 40 l12, 40 m13, 40 ndf, 40 nownownow696969, 40 owadio, 40 p2rocedure, 40 procedur1e, 40 q17, 40 qiwd2, 40 r, 40 r18, 40 read, 40 s19, 40 siuuuu, 40 t20, 40 test, 40 u21, 40 unhinged, 40 v22, 40 w23, 40 wantTocriiii, 40 wndio, 40 wqd, 40 wqd909, 40 x24, 40 x38, 40 y25, 40 z10, 40 z26, 47 KMS, 47 NOW, 47 WGT, 47 YOLOsw4gg3r, 47 a, 47 a1, 47 b, 47 b2, 47 c, 47 c3, 47 clear, 47 cs3203, 47 cum, 47 cumcum, 47 d, 47 d4, 47 dagger, 47 dw, 47 dwl9, 47 e5, 47 f, 47 f6, 47 fUcKThiS, 47 g, 47 g6, 47 g7, 47 gggggg, 47 h212, 47 h8, 47 hecarim, 47 honestlyFuckThisModule3203ShittyMod, 47 i9, 47 iWant2DIE, 47 j10, 47 k11, 47 l, 47 l12, 47 m13, 47 ndf, 47 nownownow696969, 47 owadio, 47 p2rocedure, 47 procedur1e, 47 q17, 47 r, 47 r18, 47 read, 47 s19, 47 siuuuu, 47 t20, 47 test, 47 u21, 47 unhinged, 47 v22, 47 w23, 47 wantTocriiii, 47 wndio, 47 wqd, 47 x24, 47 x38, 47 y25, 47 z10, 47 z26, 50 KMS, 50 NOW, 50 WGT, 50 YOLOsw4gg3r, 50 a, 50 a1, 50 b, 50 b2, 50 c, 50 c3, 50 clear, 50 cs3203, 50 d, 50 d4, 50 dagger, 50 dw, 50 dwl9, 50 e5, 50 f, 50 f6, 50 fUcKThiS, 50 g, 50 g6, 50 g7, 50 gggggg, 50 h212, 50 h8, 50 hecarim, 50 honestlyFuckThisModule3203ShittyMod, 50 i9, 50 iWant2DIE, 50 j10, 50 k11, 50 l, 50 l12, 50 m13, 50 ndf, 50 nownownow696969, 50 owadio, 50 p2rocedure, 50 procedur1e, 50 q17, 50 qiwd2, 50 r, 50 r18, 50 read, 50 s19, 50 siuuuu, 50 t20, 50 test, 50 u21, 50 unhinged, 50 v22, 50 w23, 50 wantTocriiii, 50 wndio, 50 wqd, 50 wqd909, 50 x24, 50 x38, 50 y25, 50 z10, 50 z26, 55 KMS, 55 NOW, 55 WGT, 55 YOLOsw4gg3r, 55 a, 55 a1, 55 b, 55 b2, 55 c, 55 c3, 55 clear, 55 cs3203, 55 cum, 55 cumcum, 55 d, 55 d4, 55 dw, 55 dwl9, 55 e5, 55 f, 55 f6, 55 fUcKThiS, 55 g, 55 g6, 55 g7, 55 gggggg, 55 h212, 55 h8, 55 hecarim, 55 honestlyFuckThisModule3203ShittyMod, 55 i9, 55 iWant2DIE, 55 j10, 55 k11, 55 l, 55 l12, 55 m13, 55 ndf, 55 nownownow696969, 55 owadio, 55 p2rocedure, 55 procedur1e, 55 q17, 55 qiwd2, 55 r, 55 r18, 55 read, 55 s19, 55 siuuuu, 55 t20, 55 test, 55 u21, 55 unhinged, 55 v22, 55 w23, 55 wantTocriiii, 55 wndio, 55 wqd, 55 wqd909, 55 x24, 55 x38, 55 y25, 55 z10, 55 z26, 57 KMS, 57 NOW, 57 WGT, 57 YOLOsw4gg3r, 57 a, 57 a1, 57 b, 57 b2, 57 c, 57 c3, 57 clear, 57 cs3203, 57 cum, 57 cumcum, 57 d, 57 d4, 57 dagger, 57 dw, 57 dwl9, 57 e5, 57 f, 57 f6, 57 g, 57 g6, 57 g7, 57 gggggg, 57 h212, 57 h8, 57 hecarim, 57 honestlyFuckThisModule3203ShittyMod, 57 i9, 57 iWant2DIE, 57 j10, 57 k11, 57 l, 57 l12, 57 m13, 57 ndf, 57 nownownow696969, 57 owadio, 57 p2rocedure, 57 procedur1e, 57 q17, 57 qiwd2, 57 r, 57 r18, 57 read, 57 s19, 57 siuuuu, 57 t20, 57 test, 57 u21, 57 unhinged, 57 v22, 57 w23, 57 wantTocriiii, 57 wndio, 57 wqd, 57 wqd909, 57 x24, 57 x38, 57 y25, 57 z10, 57 z26, 61 KMS, 61 NOW, 61 WGT, 61 YOLOsw4gg3r, 61 a, 61 a1, 61 b, 61 b2, 61 c, 61 c3, 61 clear, 61 cs3203, 61 cum, 61 cumcum, 61 d, 61 d4, 61 dagger, 61 dw, 61 dwl9, 61 e5, 61 f, 61 f6, 61 fUcKThiS, 61 g, 61 g6, 61 g7, 61 gggggg, 61 h212, 61 h8, 61 hecarim, 61 honestlyFuckThisModule3203ShittyMod, 61 i9, 61 iWant2DIE, 61 j10, 61 k11, 61 l, 61 l12, 61 m13, 61 ndf, 61 nownownow696969, 61 owadio, 61 p2rocedure, 61 procedur1e, 61 q17, 61 qiwd2, 61 r, 61 r18, 61 read, 61 s19, 61 siuuuu, 61 t20, 61 test, 61 u21, 61 unhinged, 61 v22, 61 w23, 61 wantTocriiii, 61 wndio, 61 wqd, 61 wqd909, 61 x24, 61 x38, 61 y25, 61 z10, 61 z26
+5000
+5 - Select tuple while, variable, pattern not w(v, _), such that Uses
+while w; variable v;
+Select <w, v> pattern not w(v, _) such that Uses(21, v)
+3 q17, 3 r18, 3 z10, 21 z10, 26 q17, 26 r18, 26 z10, 40 q17, 40 r18, 40 z10, 47 q17, 47 r18, 47 z10, 50 q17, 50 r18, 50 z10, 55 q17, 55 r18, 55 z10, 57 q17, 57 r18, 57 z10, 61 q17, 61 r18, 61 z10
+5000
+6 - Select while, pattern not while (stmt, _) [invalid]
+while w; stmt s;
+Select w pattern not w(s, _)
+SemanticError
+5000
+7 - Select while, pattern not while (read, _) [invalid]
+while w; read r;
+Select w pattern not w(r, _)
+SemanticError
+5000
+8 - Select while, pattern not while (print, _) [invalid]
+while w; print pn;
+Select w pattern not w(pn, _)
+SemanticError
+5000
+9 - Select while, pattern not while (assign, _) [invalid]
+while w; assign a;
+Select w pattern not w(a, _)
+SemanticError
+5000
+10 - Select while, pattern not while (call, _) [invalid]
+while w; call c;
+Select w pattern not w(c, _)
+SemanticError
+5000
+11 - Select while, pattern not while (if, _) [invalid]
+while w;
+Select w pattern not w(i, _)
+SemanticError
+5000
+12 - Select while, pattern not while (while, _) [invalid]
+while w; while w;
+Select w pattern not w(w, _)
+SemanticError
+5000
+13 - Select while, pattern not while (constant, _) [invalid]
+while w; constant cn;
+Select w pattern not w(cn, _)
+SemanticError
+5000
+14 - Select while, pattern not while (procedure, _) [invalid]
+while w; procedure p;
+Select w pattern not w(p, _)
+SemanticError
+5000
+15 - Select while, pattern not while (_, stmt) [invalid]
+while w; stmt s;
+Select w pattern not w(_, s)
+SyntaxError
+5000
+16 - Select while, pattern not while (_, read) [invalid]
+while w; read r;
+Select w pattern not w(_, r)
+SyntaxError
+5000
+17 - Select while, pattern not while (_, print) [invalid]
+while w; print pn;
+Select w pattern not w(_, pn)
+SyntaxError
+5000
+18 - Select while, pattern not while (_, assign) [invalid]
+while w; assign a;
+Select w pattern not w(_, a)
+SyntaxError
+5000
+19 - Select while, pattern not while (_, call) [invalid]
+while w; call c;
+Select w pattern not w(_, c)
+SyntaxError
+5000
+20 - Select while, pattern not while (_, if) [invalid]
+while w;
+Select w pattern not w(_, i)
+SyntaxError
+5000
+21 - Select while, pattern not while (_, while) [invalid]
+while w; while w;
+Select w pattern not w(_, w)
+SyntaxError
+5000
+22 - Select while, pattern not while (_, constant) [invalid]
+while w; constant cn;
+Select w pattern not w(_, cn)
+SyntaxError
+5000
+23 - Select while, pattern not while (_, variable) [invalid]
+while w; variable v;
+Select w pattern not w(_, v)
+SyntaxError
+5000
+24 - Select while, pattern not while (_, procedure) [invalid]
+while w; procedure p;
+Select w pattern not w(_, p)
+SyntaxError
+5000
+25 - Select tuple, while, variable pattern not w(v, _), such that Modifies
+while w; variable v;
+Select w pattern not w(v, _) such that Modifies(4, v)
+21, 26, 40, 47, 50, 55, 57, 61
+5000
+26 - Select BOOLEAN pattern not while(variable_name, _) (positive)
+while w;
+Select BOOLEAN pattern not w("r18", _)
+TRUE
+5000
+27 - Select BOOLEAN pattern not while(variable_name, _) (negative)
+while w;
+Select BOOLEAN pattern not w("sean", _)
+TRUE
+5000

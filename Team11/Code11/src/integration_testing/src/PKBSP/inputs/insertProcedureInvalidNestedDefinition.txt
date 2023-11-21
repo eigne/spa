@@ -1,0 +1,6 @@
+procedure main {
+	procedure sub {
+		x = 1;
+	}
+}
+

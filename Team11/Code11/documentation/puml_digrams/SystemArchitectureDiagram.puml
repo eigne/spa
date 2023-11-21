@@ -1,0 +1,159 @@
+@startuml
+class SourceProgramAnalyser {
+    -PKBFactory pkbFactory
+    -SourceProcessor sourceProcessor
+    -QPS qps
+    -shared_ptr<PKBSP> pkbSP
+    -shared_ptr<PKBQPS> pkbQPS
+    +void processSourceFile(string sourceFile)
+    +void evaluateQuery(string query, list<string>& results)
+}
+
+class SourceProcessor {
+    +void process(string file, shared_ptr<PKBSP> pkb)
+}
+
+class PKBFactory {
+    +pair<PKBSP, PKBQPS> createPKB()
+}
+
+class SimpleProgramTokenizer {
+    -void addSpecialCharacterToken()
+    +vector<shared_ptr<Token>> tokenize()
+}
+
+class ParserManager {
+     -vector<shared_ptr<Token>> lst
+     -vector<shared_ptr<Token>> cur
+     -shared_ptr<int> curLineNum
+    +shared_ptr<ProgramNode> generateAST(vector<shared_ptr<Token>> tokens)
+    +shared_ptr<vector<shared_ptr<StatementNode>>> generateStmtList(vector<shared_ptr<Token>>)
+    +vector<shared_ptr<Token>> getCur()
+    +vector<shared_ptr<Token>> getEnd()
+    +string peek()
+}
+
+class StorageWriter {
+    -shared_ptr<IEntityWriter> entityWriter
+    -shared_ptr<IRelationshipWriter> relationshipWriter
+    +shared_ptr<IEntityWriter> getEntityWriter()
+    +shared_ptr<IRelationshipWriter> getRelationshipWriter()
+}
+
+class DesignExtractor {
+    -unique_ptr<EntityExtractor> entityExtractor
+    -unique_ptr<RelationshipExtractor> relationshipExtractor
+    +void extract(shared_ptr<ProgramNode>& node)
+}
+
+class PKBSP {
+    -shared_ptr<PKB> pkb
+    +void insertRead(int lineNumber, string entityRead)
+    +void insertPrint(int lineNumber, string entityPrinted)
+    +void insertAssign(int lineNumber, string entityAssigned)
+    +void insertWhile(int lineNumber, vector<string>& entitiesInWhile)
+    +void insertIf(int lineNumber, vector<string>& entitiesInIf)
+    +void insertProcedure(string procedureName)
+    +void insertVariable(string variable)
+    +void insertCall(int lineNumber, string procedureCalled)
+    +void insertConstant(string constant)
+    +void insertUses(int statementNumber, string variable)
+    +void insertUses(string procedureName, string variable)
+    +void insertModifies(int statementNumber, string variable)
+    +void insertModifies(string procedureName, string variable)
+    +void insertFollows(int before, int after)
+    +void insertParents(int parent, int child)
+    +void insertPattern(int statementNumber, vector<string> postfixExpression)
+}
+
+class QueryProcessingSystem {
+ + evaluateQuery(string query, list<string> results, shared_ptr<PKBQPS> pkb)
+}
+
+class QPSStorageReader
+
+class Tokenizer {
+ +vector<shared_ptr<Token>> tokenize()
+}
+
+class TokenSplitter {
+     +vector<shared_ptr<TokenGroup>> splitIntoTokenGroups(vector<shared_ptr<Token>> queryTokens)
+}
+
+class QPSValidator {
+ -vector<shared_ptr<TokenGroup>> tokenGroups
+ -TokenGroupSyntaxValidator syntaxValidator
+ -TokenGroupSemanticValidator semanticValidator
+ +string validate()
+}
+
+class QueryExtractor {
+ -vector<shared_ptr<TokenGroup>> tokenGroups
+     -TokenGroupExtractor tokenGroupVisitor
+     +Query extractQuery()
+}
+
+class QueryEvaluator {
+ -shared_ptr<IClauseVisitor> clauseVisitor
+ -shared_ptr<IVisitsSynonym> synonymVisitor
+ +list<string> evaluateQuery(Query query)
+}
+
+class PKBQPS {
+    -shared_ptr<PKB> pkb
+    + getAllReads() : unordered_set<int>
+    + getAllPrints() : unordered_set<int>
+    + getAllAssigns() : unordered_set<int>
+    + getAllWhiles() : unordered_set<int>
+    + getAllIfs() : unordered_set<int>
+    + getAllStatements() : unordered_set<int>
+    + getAllCalls() : unordered_set<int>
+    + getAllProcedures() : unordered_set<string>
+    + getAllVariables() : unordered_set<string>
+    + getAllConstants() : unordered_set<string>
+    + getAllVariablesUsedInStatement(int statementNumber) : unordered_set<string>
+    + getAllVariablesUsedInProcedure(string procedureName) : unordered_set<string>
+    + getStatementsThatUseVariable(string variable) : unordered_set<int>
+    + getStatementsThatUseAnyVariable() : unordered_set<int>
+    + getProceduresThatUseVariable(string procedureName) : unordered_set<string>
+    + getProceduresThatUseAnyVariable() : unordered_set<string>
+    + getVariablesModifiedInStatement(int statementNumber) : unordered_set<string>
+    + getVariablesModifiedInProcedure(string procedureName) : unordered_set<string>
+    + getStatementsThatModifyVariable(string variable) : unordered_set<int>
+    + getStatementsThatModifyAnyVariable() : unordered_set<int>
+    + getProceduresThatModifyVariable(string variable) : unordered_set<string>
+    + getProceduresThatModifyAnyVariable() : unordered_set<string>
+    + getFollows(int statementNumber, bool onlyImmediate) : unordered_set<int>
+    + getAllWithFollows() : unordered_set<int>
+    + getAllWithBefore() : unordered_set<int>
+    + getBefore(int statementNumber, bool onlyImmediate) : unordered_set<int>
+    + getChild(int statementNumber, bool onlyImmediate) : unordered_set<int>
+    + getAllWithChild() : unordered_set<int>
+    + getParent(int statementNumber, bool onlyImmediate) : unordered_set<int>
+    + getAllWithParent() : unordered_set<int>
+    + hasMatchingPattern(int statementNumber, vector<string> postfixExpr, bool exactMatch)
+}
+
+SourceProgramAnalyser *-- SourceProcessor
+SourceProgramAnalyser *-- QueryProcessingSystem
+SourceProgramAnalyser *-- PKBFactory
+
+SourceProcessor *-- DesignExtractor
+SourceProcessor *-- StorageWriter
+SourceProcessor *-- ParserManager
+SourceProcessor *-- SimpleProgramTokenizer
+
+PKBFactory ..> PKBQPS : "produces"
+PKBFactory ..> PKBSP : "produces"
+
+StorageWriter ..> PKBSP : "writes to"
+
+QueryProcessingSystem *-- Tokenizer
+QueryProcessingSystem *-- TokenSplitter
+QueryProcessingSystem *-- QPSValidator
+QueryProcessingSystem *-- QueryExtractor
+QueryProcessingSystem *-- QueryEvaluator
+QueryEvaluator --> QPSStorageReader
+
+QPSStorageReader ..> PKBQPS : "reads from"
+@enduml

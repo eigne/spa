@@ -1,0 +1,17 @@
+procedure main {
+	modifyVar = assignVar;
+	print printVar;
+	if (ifVar > 0) then {
+		modifyVar = thenVar;
+	} else {
+		modifyVar = elseVar;
+	}
+	while (whileVar > 0) {
+		modifyVar = loopVar;
+	}
+	read readVar;
+}
+
+procedure subProc {
+	modifyVar = procVar;
+}

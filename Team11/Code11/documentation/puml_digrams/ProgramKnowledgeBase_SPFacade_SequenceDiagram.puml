@@ -1,0 +1,11 @@
+@startuml
+SP->PKBSP: insertWithStmtNo()
+PKBSP->PKB: insertWithStmtNo()
+PKB->DoubleMap: insertBoth()
+DoubleMap->DoubleMap: insertForward()
+DoubleMap->DoubleMap: insertBackward()
+
+SP->PKBSP: insertWithoutStmtNo()
+PKBSP->PKB: insertWithoutStmtNo()
+PKB->Set: insertElement()
+Set->Set: insert()

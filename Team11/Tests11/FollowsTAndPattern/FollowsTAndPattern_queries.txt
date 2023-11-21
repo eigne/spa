@@ -1,0 +1,80 @@
+1 - No common synonym (1 synonym)
+assign a;
+Select a such that Follows*(1,2) pattern a(_,_)
+1, 2, 4, 6, 9, 11, 15, 18, 19, 24, 25, 30, 31, 32, 33, 35, 37, 41, 42, 44, 45, 46, 49, 51, 53, 54, 56, 58, 59
+5000
+2 - No common synonym (2 synonym from 1 clause)
+variable v; assign a;
+Select v such that Follows*(1,2) pattern a(v, _"2"_)
+iWant2DIE, g7, gggggg, a, b2, a1, z26
+5000
+3 - No common synonym (2 synonym from 2 clause)
+variable v; assign a, a1;
+Select a such that Follows*(14, a1) pattern a(_,_"cs3203"_)
+15, 33
+5000
+4 - No common synonym (3 synonym from 2 clause)
+stmt s; assign a, a1;
+Select s such that Follows*(a1,s) pattern a(_,_"2"_)
+2, 3, 5, 6, 7, 8, 10, 16, 19, 20, 21, 23, 24, 25, 26, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 45, 47, 49, 50, 52, 55, 57, 59, 60
+5000
+5 - No common synonym (3 synonym from 2 clause)
+assign a, a1; variable v;
+Select a such that Follows*(1,a1) pattern a(v,_"2"_)
+2, 6, 9, 11, 18, 24, 35, 51, 58
+5000
+6 - No common synonym (4 synonym from 2 clause)
+assign a, a1; variable v; stmt s;
+Select s such that Follows*(a1,s) pattern a(v,_"3"_)
+2, 3, 5, 6, 7, 8, 10, 16, 19, 20, 21, 23, 24, 25, 26, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 45, 47, 49, 50, 52, 55, 57, 59, 60
+5000
+7 - 1 common synonym (1 syn on assign synonym)
+assign a;
+Select a such that Follows*(1,a) pattern a(_,_"2"_)
+2, 35
+5000
+8 - 1 common synonym (2 syn on variable synonym)
+assign a; variable v;
+Select a such that Follows*(14, a) pattern a(v,_"cs3203"_)
+15
+5000
+9 - 1 common synonym (2 syn on assign synonym)
+assign a, a1;
+Select a1 such that Follows*(a1,a) pattern a(_,_"g7"_)
+15, 24, 44
+5000
+10 - 1 common synonym (3 syn on assign synonym)
+assign a, a1; variable v;
+Select v such that Follows*(a1,a) pattern a(v,_"g7"_)
+z26
+5000
+11 - 1 common synonym (3 syn on assign synonym) 2
+assign a, a1; variable v;
+Select a1 such that Follows*(a1,a) pattern a(v,_"KMS"_)
+44, 58
+5000
+12 - 2 common synonym (Not possible)
+assign a; variable v;
+Select a such that Follows*(a, v) pattern a(v,_"2"_)
+SemanticError
+5000
+13 - Select synonym used in first clause
+assign a, a1;
+Select a1 such that Follows*(a1,a) pattern a(_,_"NOW"_)
+58
+5000
+14 - Select synonym used in second clause
+variable v; assign a, a1;
+Select v such that Follows*(14, a1) pattern a(v,_"cs3203"_)
+clear, h8
+5000
+15 - Select synonym used in both clauses
+assign a;
+Select a such that Follows*(24,a) pattern a(_,_"u21"_)
+25
+5000
+16 - Select synonym used in none of the clauses
+variable v; assign a, a1; stmt s;
+Select s such that Follows*(14, a1) pattern a(v,_"cs3203"_)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60
+5000

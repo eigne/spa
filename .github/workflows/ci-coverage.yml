@@ -1,0 +1,59 @@
+name: Coverage
+
+on:
+  pull_request:
+    branches: [ master ]  
+    paths: ['Team11/Code11/src/integration_testing/**', 'Team11/Code11/src/unit_testing/**']
+  push:
+    branches: [ master, yiguan/ci ]
+
+jobs:
+  coverage:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build project
+      uses: threeal/cmake-action@v1.3.0
+      with:
+        source-dir: Team11/Code11
+        generator: Ninja
+        c-compiler: clang
+        cxx-compiler: clang++
+        c-flags: -fprofile-arcs -ftest-coverage
+        cxx-flags: -fprofile-arcs -ftest-coverage
+        run-build: true
+
+    - name: Generate Test Coverage Data - Unit Test
+      working-directory: ${{runner.workspace}}/23s1-cp-spa-team-11/Team11/Code11/build/src/unit_testing
+      continue-on-error: true
+      timeout-minutes: 1
+      run: |
+        ./unit_testing
+
+    - name: Generate Test Coverage Data - Integration Test
+      working-directory: ${{runner.workspace}}/23s1-cp-spa-team-11/Team11/Code11/build/src/integration_testing
+      continue-on-error: true
+      timeout-minutes: 1
+      run: |
+        ./integration_testing
+
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v1.9.0
+      with:
+        version: "14.0"
+
+    - name: Generate coverage report
+      working-directory: ${{runner.workspace}}/23s1-cp-spa-team-11/Team11/Code11
+      run: |
+        pip3 install gcovr
+        gcovr --gcov-executable "llvm-cov gcov" -f src/spa/ --cobertura ${{runner.workspace}}/23s1-cp-spa-team-11/Team11/Code11/build/coverage.xml --txt
+
+    - name: Produce the coverage report
+      uses: insightsengineering/coverage-action@v2
+      with:
+        path: ${{runner.workspace}}/23s1-cp-spa-team-11/Team11/Code11/build/coverage.xml
+        threshold: 70
+        publish: true
+        togglable-report: true

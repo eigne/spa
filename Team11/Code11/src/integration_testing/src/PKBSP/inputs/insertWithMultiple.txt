@@ -1,0 +1,58 @@
+procedure main {
+    x = 1;
+    y = x + 2;
+    x = 3;
+    z = x + 4;
+    read x;
+    a = x + 5;
+    call modifyX;
+    b = x + 6;
+    call doNotModifyX;
+    c = x + 7;
+    x = 1;
+    if (b == 3) then {
+        y = x + 2;
+    } else { read c; }
+    read x;
+    if (b == 3) then {
+        y = x + 2;
+    } else { read c; }
+    call modifyX;
+    if (b == 3) then {
+        y = x + 2;
+    } else { read c;}
+    call doNotModifyX;
+    if (b == 3) then {
+        y = x + 2;
+    } else {read c; }
+    x = 1;
+    if (b == 3) then {
+        y = x + 2;
+    } else {read c;}
+    x = 1;
+    while (b == 3) {
+        x = 2;}
+    y = x + 2;
+    x = 1;
+    while (b == 3) {
+        y = x + 2;}
+    y = x + 2;
+    x = 1;
+    if (b == 3) then {
+        x = 2;
+    } else {read c;}
+    y = x + 2;
+    x = 1;
+    if (b == 3) then {
+        y = x + 2;
+    } else {read c;    }
+    y = x + 2;
+}
+
+procedure modifyX {
+    x = 2;
+}
+
+procedure doNotModifyX{
+    y = x;
+}

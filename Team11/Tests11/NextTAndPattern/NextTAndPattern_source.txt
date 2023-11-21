@@ -1,0 +1,29 @@
+procedure nEXtStARPAttterrn123 {print p1;
+	read r2;
+	if ((i3 == a3 + B3) && (i3 + b3 * cAt3 <= 5 + HErE3)) then {
+        ASsign4 = 5;
+        while (x5 == 5) {
+            procedure = a6 + b6 + m11 + read;}
+        print p7;
+        call readPoint;
+    } else {read r8;
+        if (x9 != 5) then {
+			print n11;
+            n11         =       0 +     m11 *                  902;
+		} else {while (x12 >         128 + a12 + m11) {
+				print p13;
+				read r14;}
+            read r15; call printResults;   }           }
+    while (x16 >= a16 + l16 * 60 * (5 + p16)) {
+		read = a17 +             b17 + b6;
+        if (x18 < p18)     then {
+            print           p19; call printResults;
+        } else {print p20;}}
+    read                                        r21;
+    procedure = 10;
+    call readPoint;
+}
+
+procedure readPoint { read x; read y; }
+
+procedure printResults { print flag; print cenX; print cenY; print normSq; }

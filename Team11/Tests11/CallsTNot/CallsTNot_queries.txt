@@ -1,0 +1,85 @@
+1 - Calls: procedure, procedure1
+procedure p, p1;
+Select p such that not Calls*(p, p1)
+call, cumcum, diediedie, HanSolo, idw2DoThis, LmaO69HEHE, print, procedure, x1, x2, y3
+5000
+2 - Calls: procedure, procedure1 (pair)
+procedure p, p1;
+Select <p, p1> such that not Calls*(p, p1)
+HanSolo HanSolo, HanSolo LmaO69HEHE, HanSolo call, HanSolo cumcum, HanSolo diediedie, HanSolo idw2DoThis, HanSolo print, HanSolo procedure, HanSolo x1, HanSolo x2, HanSolo y3, LmaO69HEHE HanSolo, LmaO69HEHE LmaO69HEHE, LmaO69HEHE call, LmaO69HEHE cumcum, LmaO69HEHE diediedie, LmaO69HEHE idw2DoThis, LmaO69HEHE print, LmaO69HEHE procedure, LmaO69HEHE x1, LmaO69HEHE x2, LmaO69HEHE y3, call HanSolo, call call, call cumcum, call diediedie, call idw2DoThis, call print, call procedure, call x1, call x2, call y3, cumcum HanSolo, cumcum LmaO69HEHE, cumcum call, cumcum cumcum, cumcum procedure, cumcum x1, cumcum x2, cumcum y3, diediedie HanSolo, diediedie LmaO69HEHE, diediedie call, diediedie cumcum, diediedie diediedie, diediedie print, diediedie procedure, diediedie x1, diediedie x2, diediedie y3, idw2DoThis HanSolo, idw2DoThis LmaO69HEHE, idw2DoThis call, idw2DoThis cumcum, idw2DoThis diediedie, idw2DoThis idw2DoThis, idw2DoThis print, idw2DoThis procedure, idw2DoThis x1, idw2DoThis x2, idw2DoThis y3, print HanSolo, print LmaO69HEHE, print call, print cumcum, print diediedie, print print, print procedure, print x1, print x2, print y3, procedure HanSolo, procedure cumcum, procedure diediedie, procedure idw2DoThis, procedure print, procedure procedure, x1 HanSolo, x1 cumcum, x1 diediedie, x1 idw2DoThis, x1 print, x1 procedure, x1 x1, x1 y3, x2 HanSolo, x2 cumcum, x2 diediedie, x2 idw2DoThis, x2 print, x2 procedure, x2 x1, x2 x2, x2 y3, y3 HanSolo, y3 cumcum, y3 diediedie, y3 idw2DoThis, y3 print, y3 procedure, y3 y3
+5000
+3 - Calls: procedure, procedure
+procedure p;
+Select p such that not Calls*(p, p)
+call, cumcum, diediedie, HanSolo, idw2DoThis, LmaO69HEHE, print, procedure, x1, x2, y3
+5000
+4 - Calls: procedure, wildcard
+procedure p;
+Select p such that not Calls*(p, _)
+HanSolo, idw2DoThis, LmaO69HEHE
+5000
+5 - Calls: wildcard, procedure
+procedure p;
+Select p such that not Calls*(_, p)
+HanSolo, cumcum, procedure
+5000
+6 - Calls: procedure, ident
+procedure p;
+Select p such that not Calls*(p, "LmaO69HEHE")
+cumcum, diediedie, HanSolo, idw2DoThis, LmaO69HEHE, print
+5000
+7 - Calls: procedure, ident
+procedure p;
+Select p such that not Calls*(p, "NonExistent")
+HanSolo, LmaO69HEHE, call, cumcum, diediedie, idw2DoThis, print, procedure, x1, x2, y3
+5000
+8 - Calls: ident, procedure
+procedure p;
+Select p such that not Calls*("cumcum", p)
+call, cumcum, HanSolo, LmaO69HEHE, procedure, x1, x2, y3
+5000
+9 - Calls: ident, procedure
+procedure p;
+Select p such that not Calls*("idw2DoThis", p)
+HanSolo, LmaO69HEHE, call, cumcum, diediedie, idw2DoThis, print, procedure, x1, x2, y3
+5000
+10 - Calls: ident, ident
+
+Select BOOLEAN such that not Calls*("print", "idw2DoThis")
+FALSE
+5000
+11 - Calls: ident, ident
+
+Select BOOLEAN such that not Calls*("x3", "HanSolo")
+TRUE
+5000
+12 - Calls: procedure, ident
+procedure p;
+Select p such that not Calls*(p, "NonExistent")
+HanSolo, LmaO69HEHE, call, cumcum, diediedie, idw2DoThis, print, procedure, x1, x2, y3
+5000
+13 - Calls: wildcard, ident
+
+Select BOOLEAN such that not Calls*(_, "idw2DoThis")
+FALSE
+5000
+14 - Calls: wildcard, ident
+
+Select BOOLEAN such that not Calls*(_, "cumcum")
+TRUE
+5000
+15 - Calls: ident, wildcard
+
+Select BOOLEAN such that not Calls*(_, "diediedie")
+FALSE
+5000
+16 - Calls: ident, wildcard
+
+Select BOOLEAN such that not Calls*("HanSolo", _)
+TRUE
+5000
+17 - CallsT: wildcard, wildcard
+
+Select BOOLEAN such that not Calls*(_, _)
+FALSE
+5000

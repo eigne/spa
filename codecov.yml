@@ -1,0 +1,16 @@
+# Prevents codecov from blocking merge/pull requests if coverage didn't hit the threshold
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+
+# Exclude running coverage on the following directories
+ignore:
+  - Team11/Code11/src/unit_testing
+  - Team11/Code11/src/integration_testing
+  - Team11/Code11/src/autotester_gui
+  - Team11/Code11/src/autotester

@@ -1,0 +1,205 @@
+1 - Select ifs, pattern not if (_, _, _)
+if i;
+Select i pattern not i(_, _, _)
+52
+5000
+2 - Select ifs, pattern not if (variable, _, _)
+if i; variable v;
+Select i pattern not i(v, _, _)
+8, 10, 16, 43, 52
+5000
+3 - Select ifs, pattern not if ('l12', _, _)
+if i;
+Select i pattern not i("l12", _, _)
+8, 10, 43, 52
+5000
+4 - Select ifs, pattern not if ('  l12', _, _) with space
+if i;
+Select i pattern not i("    l12", _, _)
+8, 10, 43, 52
+5000
+5 - Select ifs, pattern not if (stmt, _, _) [invalid]
+if i; stmt s;
+Select i pattern not i(s, _, _)
+SemanticError
+5000
+6 - Select ifs, pattern not if (read, _, _) [invalid]
+if i; read r;
+Select i pattern not i(r, _, _)
+SemanticError
+5000
+7 - Select ifs, pattern not if (print, _, _) [invalid]
+if i; print pn;
+Select i pattern not i(pn, _, _)
+SemanticError
+5000
+8 - Select ifs, pattern not if (assign, _, _) [invalid]
+if i; assign a;
+Select i pattern not i(a, _, _)
+SemanticError
+5000
+9 - Select ifs, pattern not if (call, _, _) [invalid]
+if i; call c;
+Select i pattern not i(c, _, _)
+SemanticError
+5000
+10 - Select ifs, pattern not if (if, _, _) [invalid]
+if i;
+Select i pattern not i(i, _, _)
+SemanticError
+5000
+11 - Select ifs, pattern not if (while, _, _) [invalid]
+if i; while w;
+Select i pattern not i(w, _, _)
+SemanticError
+5000
+12 - Select ifs, pattern not if (constant, _, _) [invalid]
+if i; constant cn;
+Select i pattern not i(cn, _, _)
+SemanticError
+5000
+13 - Select ifs, pattern not if (procedure, _, _) [invalid]
+if i; procedure p;
+Select i pattern not i(p, _, _)
+SemanticError
+5000
+14 - Select ifs, pattern not if (_, stmt, _) [invalid]
+if i; stmt s;
+Select i pattern not i(_, s, _)
+SyntaxError
+5000
+15 - Select ifs, pattern not if (_, read, _) [invalid]
+if i; read r;
+Select i pattern not i(_, r, _)
+SyntaxError
+5000
+16 - Select ifs, pattern not if (_, print, _) [invalid]
+if i; print pn;
+Select i pattern not i(_, pn, _)
+SyntaxError
+5000
+17 - Select ifs, pattern not if (_, assign, _) [invalid]
+if i; assign a;
+Select i pattern not i(_, a, _)
+SyntaxError
+5000
+18 - Select ifs, pattern not if (_, call, _) [invalid]
+if i; call c;
+Select i pattern not i(_, c, _)
+SyntaxError
+5000
+19 - Select ifs, pattern not if (_, if, _) [invalid]
+if i;
+Select i pattern not i(_, i, _)
+SyntaxError
+5000
+20 - Select ifs, pattern not if (_, while, _) [invalid]
+if i; while w;
+Select i pattern not i(_, w, _)
+SyntaxError
+5000
+21 - Select ifs, pattern not if (_, constant, _) [invalid]
+if i; constant cn;
+Select i pattern not i(_, cn, _)
+SyntaxError
+5000
+22 - Select ifs, pattern not if (_, variable, _) [invalid]
+if i; variable v;
+Select i pattern not i(_, v, _)
+SyntaxError
+5000
+23 - Select ifs, pattern not if (_, procedure, _) [invalid]
+if i; procedure p;
+Select i pattern not i(_, p, _)
+SyntaxError
+5000
+24 - Select ifs, pattern not if (_, _, stmt) [invalid]
+if i; stmt s;
+Select i pattern not i(_, _, s)
+SyntaxError
+5000
+25 - Select ifs, pattern not if (_, _, read) [invalid]
+if i; read r;
+Select i pattern not i(_, _, r)
+SyntaxError
+5000
+26 - Select ifs, pattern not if (_, _, print) [invalid]
+if i; print pn;
+Select i pattern not i(_, _, p)
+SyntaxError
+5000
+27 - Select ifs, pattern not if (_, _, assign) [invalid]
+if i; assign a;
+Select i pattern not i(_, _, a)
+SyntaxError
+5000
+28 - Select ifs, pattern not if (_, _, call) [invalid]
+if i; call c;
+Select i pattern not i(_, _, c)
+SyntaxError
+5000
+29 - Select ifs, pattern not if (_, _, if) [invalid]
+if i;
+Select i pattern not i(_, _, i)
+SyntaxError
+5000
+30 - Select ifs, pattern not if (_, _, while) [invalid]
+if i; while w;
+Select i pattern not i(_, _, w)
+SyntaxError
+5000
+31 - Select ifs, pattern not if (_, _, constant) [invalid]
+if i; constant cn;
+Select i pattern not i(_, _, cn)
+SyntaxError
+5000
+32 - Select ifs, pattern not if (_, _, variable) [invalid]
+if i; variable v;
+Select i pattern not i(_, _, v)
+SyntaxError
+5000
+33 - Select ifs, pattern not if (_, _, procedure) [invalid]
+if i; procedure p;
+Select i pattern not i(_, _, p)
+SyntaxError
+5000
+34 - Select ifs, pattern not if('0', _, _) [edge]
+if i;
+Select i pattern not i("0", _, _)
+SyntaxError
+5000
+35 - Select ifs, pattern not if('14509', _, _) [edge]
+if i;
+Select i pattern not i("14509", _, _)
+SyntaxError
+5000
+36 - Select tuple if, variable, pattern not if(v, _, _)
+if i; variable v;
+Select <i, v> pattern not i(v, _, _)
+10 KMS, 10 NOW, 10 WGT, 10 YOLOsw4gg3r, 10 a, 10 a1, 10 b, 10 b2, 10 c, 10 c3, 10 clear, 10 cs3203, 10 cum, 10 cumcum, 10 d, 10 d4, 10 dagger, 10 dw, 10 dwl9, 10 e5, 10 f, 10 f6, 10 fUcKThiS, 10 g, 10 g6, 10 g7, 10 gggggg, 10 h212, 10 h8, 10 hecarim, 10 honestlyFuckThisModule3203ShittyMod, 10 i9, 10 iWant2DIE, 10 j10, 10 k11, 10 l, 10 l12, 10 m13, 10 ndf, 10 nownownow696969, 10 owadio, 10 p2rocedure, 10 procedur1e, 10 q17, 10 qiwd2, 10 r, 10 r18, 10 read, 10 s19, 10 t20, 10 test, 10 u21, 10 unhinged, 10 v22, 10 w23, 10 wantTocriiii, 10 wndio, 10 wqd, 10 wqd909, 10 x24, 10 x38, 10 z10, 10 z26, 16 KMS, 16 NOW, 16 WGT, 16 YOLOsw4gg3r, 16 a, 16 a1, 16 b, 16 b2, 16 c, 16 c3, 16 clear, 16 cs3203, 16 cum, 16 cumcum, 16 d, 16 d4, 16 dagger, 16 dw, 16 dwl9, 16 e5, 16 f, 16 f6, 16 fUcKThiS, 16 g, 16 g6, 16 g7, 16 gggggg, 16 h212, 16 h8, 16 hecarim, 16 honestlyFuckThisModule3203ShittyMod, 16 i9, 16 iWant2DIE, 16 j10, 16 k11, 16 l, 16 m13, 16 ndf, 16 nownownow696969, 16 owadio, 16 p2rocedure, 16 procedur1e, 16 q17, 16 qiwd2, 16 r, 16 r18, 16 read, 16 s19, 16 t20, 16 test, 16 u21, 16 unhinged, 16 v22, 16 w23, 16 wantTocriiii, 16 wndio, 16 wqd, 16 wqd909, 16 x24, 16 x38, 16 y25, 16 z10, 16 z26, 43 KMS, 43 NOW, 43 WGT, 43 YOLOsw4gg3r, 43 a, 43 a1, 43 b, 43 b2, 43 c, 43 c3, 43 clear, 43 cs3203, 43 cum, 43 cumcum, 43 d, 43 d4, 43 dagger, 43 dw, 43 dwl9, 43 e5, 43 f, 43 f6, 43 fUcKThiS, 43 g, 43 g6, 43 g7, 43 gggggg, 43 h8, 43 hecarim, 43 honestlyFuckThisModule3203ShittyMod, 43 i9, 43 iWant2DIE, 43 j10, 43 k11, 43 l, 43 l12, 43 m13, 43 ndf, 43 nownownow696969, 43 owadio, 43 p2rocedure, 43 procedur1e, 43 q17, 43 qiwd2, 43 r, 43 r18, 43 read, 43 s19, 43 t20, 43 test, 43 u21, 43 unhinged, 43 v22, 43 w23, 43 wantTocriiii, 43 wndio, 43 wqd, 43 wqd909, 43 x24, 43 x38, 43 y25, 43 z10, 43 z26, 52 KMS, 52 NOW, 52 WGT, 52 YOLOsw4gg3r, 52 a, 52 a1, 52 b, 52 b2, 52 c, 52 c3, 52 clear, 52 cs3203, 52 cum, 52 cumcum, 52 d, 52 d4, 52 dagger, 52 dw, 52 dwl9, 52 e5, 52 f, 52 f6, 52 fUcKThiS, 52 g, 52 g6, 52 g7, 52 gggggg, 52 h212, 52 h8, 52 hecarim, 52 honestlyFuckThisModule3203ShittyMod, 52 i9, 52 iWant2DIE, 52 j10, 52 k11, 52 l, 52 l12, 52 m13, 52 ndf, 52 nownownow696969, 52 owadio, 52 p2rocedure, 52 procedur1e, 52 q17, 52 qiwd2, 52 r, 52 r18, 52 read, 52 s19, 52 t20, 52 test, 52 u21, 52 unhinged, 52 v22, 52 w23, 52 wantTocriiii, 52 wndio, 52 wqd, 52 wqd909, 52 x24, 52 x38, 52 y25, 52 z10, 52 z26, 8 KMS, 8 NOW, 8 WGT, 8 YOLOsw4gg3r, 8 a, 8 a1, 8 b, 8 b2, 8 c, 8 c3, 8 clear, 8 cs3203, 8 cum, 8 cumcum, 8 d, 8 d4, 8 dagger, 8 dw, 8 dwl9, 8 e5, 8 f, 8 fUcKThiS, 8 g, 8 g6, 8 g7, 8 gggggg, 8 h212, 8 h8, 8 hecarim, 8 honestlyFuckThisModule3203ShittyMod, 8 i9, 8 iWant2DIE, 8 j10, 8 k11, 8 l, 8 l12, 8 m13, 8 ndf, 8 nownownow696969, 8 owadio, 8 p2rocedure, 8 procedur1e, 8 q17, 8 qiwd2, 8 r, 8 r18, 8 read, 8 s19, 8 t20, 8 test, 8 u21, 8 unhinged, 8 v22, 8 w23, 8 wantTocriiii, 8 wndio, 8 wqd, 8 wqd909, 8 x24, 8 x38, 8 y25, 8 z10, 8 z26
+5000
+37 - Select tuple if, variable pattern not if(v, _, _), such that Uses
+if i; variable v;
+Select <i, v> pattern not i(v, _, _) such that Uses(11, v)
+8 x24, 8 y25, 10 x24, 16 x24, 16 y25, 43 x24, 43 y25, 52 x24, 52 y25
+5000
+38 - Select tuple if, variable, pattern not if(v, _, _), such that Modifies
+if i; variable v;
+Select <i, v> pattern not i(v, _, _) such that Modifies(i, v)
+8 a, 8 clear, 8 g7, 8 gggggg, 8 j10, 8 k11, 8 nownownow696969, 8 u21, 8 v22, 8 w23, 8 x24, 8 z26, 10 a, 10 clear, 10 f6, 10 gggggg, 10 j10, 10 k11, 10 u21, 10 z26, 16 a, 16 f6, 43 g6, 43 gggggg, 43 honestlyFuckThisModule3203ShittyMod, 43 iWant2DIE, 43 procedur1e, 43 test, 43 unhinged, 43 wndio, 43 wqd, 43 z26, 52 procedur1e, 52 test
+5000
+39 - Select if pattern not if('variable name', _, _)
+if i;
+Select i pattern not i("l12", _, _)
+8, 10, 43, 52
+5000
+40 - Select BOOLEAN with if('variable name', _, _) (positive)
+if i;
+Select BOOLEAN pattern not i("f6", _, _)
+TRUE
+5000
+41 - Select BOOLEAN with if('variable name', _, _) (negative)
+if i;
+Select BOOLEAN pattern not i("sean", _, _)
+TRUE
+5000

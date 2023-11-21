@@ -1,0 +1,201 @@
+1 - Select all assignments
+assign a;
+Select a pattern a(_,_)
+1, 2, 4, 6, 9, 11, 15, 18, 19, 24, 25, 30, 31, 32, 33, 35, 37, 41, 42, 44, 45, 48, 50, 52, 53, 55, 57
+50000
+2 - All assignments by pattern
+assign a;
+Select a pattern a(_   ,  "b - a / cs3203"   )
+15
+5000
+3 - Select all assignments by sub-pattern
+assign a;
+Select a pattern a(_ ,  _"cs3203"_)
+15, 33
+5000
+4 - Select all assignment by sub pattern (with weird spacing in expr)
+assign a;
+Select a pattern a(_ ,  _"read     /    f *    (2    + a)"_)
+24
+5000
+5 - Using full pattern as sub pattern
+assign a;
+Select a pattern a(_,_"g + 10"_)
+41
+5000
+6 - Using nested brackets in sub pattern
+assign a;
+Select a pattern a(_,_"(9 + 2 / (r + l) * r)"_)
+18
+5000
+7 - Using consecutive brackets in sub pattern
+assign a;
+Select a pattern a(_,_"(d / 3222) - (9 + 2 / (r + l) * r)"_)
+18
+5000
+8 - Get assign by variable name
+assign a;
+Select a pattern a("g6",_)
+44
+5000
+9 - Get assign by variable name (no match)
+assign a;
+Select a pattern a("fksdbfsubfu",_)
+
+5000
+10 - Select using variable and full pattern
+assign a;
+Select a pattern a("clear", "b - a / cs3203")
+15
+5000
+11 - Select using variable and sub pattern
+assign a;
+Select a pattern a("g6",_"69"_)
+44
+5000
+12 - Select using variable and sub pattern (full expr)
+assign a;
+Select a pattern a("clear", _"b - a / cs3203"_)
+15
+5000
+13 - Select using variable and sub pattern (partial const)
+assign a;
+Select a pattern a("gggggg",_"2"_)
+24, 35
+5000
+14 - Select all variables by sub pattern
+assign a; variable v;
+Select v pattern a(v,_"2"_)
+iWant2DIE, g7, gggggg, a, b2, a1, z26
+5000
+15 - Select all variables by full pattern
+assign a; variable v;
+Select v pattern a(v,"2")
+b2
+5000
+16 - Select all assigned variables
+assign a; variable v;
+Select v pattern a(v,_)
+a1, b2, d4, g7, z26, clear, a, p16, gggggg, v22, w23, x24, h8, d, WGT, g6, wqd, iWant2DIE, test, procedur1e, unhinged, honestlyFuckThisModule3203ShittyMod, wndio
+5000
+17 - Select all variables by sub pattern (sub-expr)
+assign a; variable v;
+Select v pattern a(v,_"dw + 2"_)
+gggggg
+5000
+18 - Select all variables by sub pattern (vaName + const)
+assign a; variable v;
+Select v pattern a(v,_"2 + a"_)
+gggggg
+5000
+19 - Select all variables by sub pattern varName
+assign a; variable v;
+Select v pattern a(v,_"KMS"_)
+iWant2DIE, honestlyFuckThisModule3203ShittyMod
+5000
+20 - Select all assign by sub pattern 2 varName 1 op
+assign a; variable v;
+Select a pattern a(v,_"KMS + NOW"_)
+50, 57
+5000
+21 - Validate Brackets (single bracket)
+assign a; variable v;
+Select a pattern a(v,_"(2 + a)"_)
+24, 35
+5000
+22 - Validate Brackets (unclosed bracket)
+assign a; variable v;
+Select a pattern a(v,_"(2 + a"_)
+SyntaxError
+5000
+23 - Validate Brackets (consecutive bracket) (no match coz AST)
+assign a; variable v;
+Select v pattern a(v, _" ( x24 + y25 ) + ( 6 * 9 )"_)
+
+5000
+24 - Validate Brackets (Nested bracket)
+assign a; variable v;
+Select v pattern a(v, _"(9 + 2 / (r + l) * r)"_)
+a
+5000
+25 - Select all by variable and sub pattern (const)
+assign a;
+Select a pattern a("a",_"2"_)
+18
+5000
+26 - Select all by variable and sub pattern (varname)
+assign a;
+Select a pattern a(_,_"owadio"_)
+42
+5000
+27 - Invalid Operator
+assign a; variable v;
+Select v pattern a(v, _"r ^ 9"_)
+SyntaxError
+5000
+28 - Undeclared synonym
+assign a;
+Select v pattern a(v, _"r * 9"_)
+SemanticError
+5000
+29 - Pattern keyword spelt incorrectly
+assign a; variable v;
+Select v patternnn a(v,_"KMS"_)
+SyntaxError
+5000
+30 - Missing semicolon in declarations
+assign a; variable v
+Select v pattern a(v,_"2 + a"_)
+SyntaxError
+5000
+31 - Incorrectly using stmt synonym in an assign pattern
+assign a; stmt stmt;
+Select stmt pattern a(stmt,_"dugbd + dogbdeb"_)
+SemanticError
+5000
+32 - Incorrectly using print synonym in an assign pattern
+assign a; print pn;
+Select pn pattern a(pn,_"gjd + jds"_)
+SemanticError
+5000
+33 - Incorrectly using read synonym in an assign pattern
+assign a; read read;
+Select read pattern a(read,_"read + read"_)
+SemanticError
+5000
+34 - Incorrectly using procedure synonym in an assign pattern
+assign a; procedure p;
+Select p pattern a(p,_"kjdbngkd "_)
+SemanticError
+5000
+35 - Incorrectly using call synonym in an assign pattern
+assign a; call c;
+Select c pattern a(c,_)
+SemanticError
+5000
+36 - Incorrectly using while synonym in an assign pattern
+assign a; while gg;
+Select gg pattern a(gg,_)
+SemanticError
+5000
+37 - No such thing as an stmt pattern clause
+variable v; stmt s;
+Select v pattern s(v,_)
+SemanticError
+5000
+38 - Select using variable and sub pattern (partial const) w weird spacing
+assign a;
+Select a pattern a("gggggg",_"  2          "_)
+24, 35
+5000
+39 - Validate Brackets (weird bracket)
+assign a; variable v;
+Select a pattern a(v,_"2 ) + (2"_)
+SyntaxError
+5000
+40 - Expression with Wildcards are not allowed in the first argument
+assign a; variable v;
+Select v pattern a(_"something"_ , _"(9 + 2 / (r + l) * r)"_)
+SyntaxError
+5000
+

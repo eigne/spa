@@ -1,0 +1,78 @@
+procedure fOllowsTestybeSTY { a1 = 1;
+    b2 = 2;
+    while ((c3 > 5) && (d4 > 3) ) {
+        d4 = e5 + 4;
+        read e5;
+        a1 = b2 / 5;
+        read e5;
+        if (f6 > 1) then {
+            g7 = x24 * (3 - 2);
+            if (y25 < 10) then {
+                z26 = x24 + y25 + 6 * 9;
+            } else { read j10;
+                read k11;
+                print h8;
+                print i9;
+                if (l12 == 88) then {
+                    print m13;
+                } else { n14 = o15;
+                    p16 = 70192;
+                } print i9;
+                while (q17 > r18) {
+                    print z10;
+                    call while;
+                    print s23;
+                    a = j12;
+                } read u21;
+                z26 = y25 * (u21 - g7);
+                read m13;
+                while (s19 == t20) {
+                    read u21;
+                } call while;
+                print j10;
+            } read nownownow696969;
+            call while;
+        } else { v22 = 24;
+            w23 = 3;
+            x24 = w23;
+        } h8 = i9 % k11;
+    } print a1;
+    call while;
+    p2e = dw - 12;
+    call while;
+    read l12;
+} procedure dougDimmadome { d = 23;
+    print x38;
+    read g7;
+    while (c3 == 78) {
+        b2 = a1;
+    } WGT = owadio;
+    if (h212 >= 12) then {
+        g6 = 69;
+    } else { wndio = 12;
+        while (wqd909 != qiwd2) {
+            print cum;
+        } wqd = dwl9;
+        while (cumcum == cum) {
+            iWant2DIE = KMS;
+        } if (if == 2) then {
+            test = 69;
+        } else { procedur1e = p2rocedure;
+        } while (dagger >= 999) {
+            unhinged = hecarim;
+        } while (fUcKThiS > 0) {
+            honestlyFuckThisModule3203ShittyMod = kys;
+        }} print YOLOsw4gg3r;
+} procedure while { call dougDimmadome;
+    while (hmm == 128) {
+        call dougDimmadome;
+        if (gmail <= dotcom) then {
+            iWantDie = read;
+            read hehe;
+            call dougDimmadome;
+            read cum1;
+        } else { call dougDimmadome;
+            call dougDimmadome;
+        } call dougDimmadome;
+    } call dougDimmadome;
+}

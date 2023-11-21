@@ -1,0 +1,66 @@
+procedure normal {
+	read x;
+	if (a == b) then {
+		if ((g6 > c) || (m < n)) then {
+			read read;
+		}
+		else {
+			b = a;
+			read b;
+			read c;
+			print x;
+		}
+		a = 1;
+		b = 2;
+	} else {
+		c = 3;
+		if (b > 3) then {
+			a = a - 1;
+			d = 9;
+			while (m > b) {
+				read print;
+				print read;
+			}
+		} else {
+			clear = b - a / cs3203;
+			print b;
+		}
+		read d;
+		a = (b * c) % ((d / 3222) - (9 + 2 / (r + l) * r));
+		b = c;
+		print r;
+	}
+	while (i == 0) {
+		print c;
+		read n;
+		while ((c >= 2) && (a > 2981111)) {
+			t = g6;
+			ggggggg = (1 + 2) * b + (read / f * (2 + a));
+			print g;
+		}
+		if ((g == 0) || ((b * 6969) > r)) then {
+			x = l + m / (m / n) % 2981111;
+		}
+		else {
+			g6 = 0;
+			c = b;
+		}
+	}
+	if (i == procedure) then {
+		while (m > c) {
+			read g6;
+			a = 3;
+			b = 2981111;
+			c = d;
+			print m;
+		}
+	} else {
+		g6 = cs3203;
+		while ((m > a) || (f <= (a + a))) {
+			g = g + 10;
+			t = 6969 * b;
+			read g6;
+			print a;
+		}
+	}
+}

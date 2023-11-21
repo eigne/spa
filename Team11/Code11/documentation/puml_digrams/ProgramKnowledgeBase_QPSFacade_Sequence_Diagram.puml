@@ -1,0 +1,53 @@
+@startuml
+QPS->PKBQPS: getAllEntity()
+PKBQPS->PKB: getAllEntity()
+PKB->DoubleMap: getAllForwardKeys()
+DoubleMap-->QPS: unordered_set entities
+
+QPS->PKBQPS: getVariablesRelatedToStmtOrProc(stmtOrProc)
+PKBQPS->PKB: getVariablesRelatedToStmtOrProc(stmtOrProc)
+PKB->DoubleMap: lookupForward(stmtOrProc)
+DoubleMap-->QPS: unordered_set variables
+
+QPS->PKBQPS: getStmtsOrProcsRelatedToVariable(variable)
+PKBQPS->PKB: getStmtsOrProcsRelatedToVariable(variable)
+PKB->DoubleMap: lookupBackward(variable)
+DoubleMap-->QPS: unordered_set stmtsOrProcs
+
+QPS->PKBQPS: getRelation(stmtNo)
+PKBQPS->PKB: getRelation(stmtNo)
+alt Relation
+    PKB->DoubleMap: lookupForward(stmtNo)
+else Relation*
+    PKB->DoubleMap: lookupForwardRecursively(stmtNo)
+end
+DoubleMap-->QPS: unordered_set<int> statements
+
+QPS->PKBQPS: getInverseRelation(stmtNo)
+PKBQPS->PKB: getInverseRelation(stmtNo)
+alt Relation
+    PKB->DoubleMap: lookupBackward(stmtNo)
+else Relation*
+    PKB->DoubleMap: lookupBackwardRecursively(stmtNo)
+end
+DoubleMap-->QPS: unordered_set<int> statements
+
+QPS->PKBQPS: getAllWithRelation()
+PKBQPS->PKB: getAllWithRelation()
+PKB->DoubleMap: getAllForwardKeys()
+DoubleMap-->QPS: unordered_set<int> statements
+
+QPS->PKBQPS: getAllWithInverseRelation()
+PKBQPS->PKB: getAllWithInverseRelation()
+PKB->DoubleMap: getAllBackwardKeys()
+DoubleMap-->QPS: unordered_set<int> statements
+QPS->PKBQPS: hasMatchingPattern(stmtNo, postFixExpression)
+PKBQPS->PKB: hasMatchingPattern(stmtNo, postFixExpression)
+PKB->DoubleMap: lookupForward(stmtNo)
+DoubleMap-->PKB: unordered_set patterns
+alt exactMatchRequired
+    PKB-->QPS: bool (exact match found)
+else exactMatchNotRequired
+    PKB-->QPS: bool (exact match or substring found)
+end
+@enduml

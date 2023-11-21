@@ -1,0 +1,542 @@
+@startuml
+skinparam groupInheritance 3
+
+class StaticProgramAnalyser {
+    -PKBFactory pkb
+    -SourceProcessor sourceProcessor
+    -QPS qps
+    
+    +void processSourceFile(string sourceFile)
+    +void evaluateQuery(string query, list<string>& results)
+}
+
+package commons {
+    package tokenizer_common {
+        class Tokenizer {
+            #istream* stream
+            #vector<shared_ptr<Token>> tokens
+            #string currentString	
+            #char peekNextChar()
+            #char readNextChar()
+            #void readToken()
+            #void addNameToken()
+            #void addSpecialCharacterToken()
+        }
+    }
+    
+    package tokens {
+        class Token {
+            #string stringValue
+            +Token(string stringValue)
+            +string getStringValue()
+        }
+        
+        class SpecialCharacterToken {
+            +SpecialCharacterToken(string stringValue)
+        }
+        
+        class NameToken {
+            +NameToken(string stringValue)
+        }
+        
+        class EndOfFileToken
+        
+        EndOfFileToken -u-|> Token
+        SpecialCharacterToken -u-|> Token
+        NameToken -u-|> Token
+    }
+    
+    package validator_commons {
+        class SyntaxValidator {
+            +bool validateName(string s)
+            +bool validateInteger(string s)
+        }
+    }
+    
+    class ExpressionParser {
+        -{static} inline vector<string> postfixNotation
+        -{static} inline stack<char> operatorStack
+        -{static} void removeSpaces(string& str)
+        -{static} bool isOperator(char c)
+        -{static} void handleCloseParen()
+        -{static} void handleOperator(char c)
+        -{static} void handleOperand(string& infix, int& i)
+        -{static} void popRemainingElements()
+        +{static} vector<string> convertToPostfix(staring infix)
+        +{static} bool isSubarray(vector<string> array, vector<string> subarray)
+    }
+    
+    Tokenizer --> "*" Token : produces
+}
+
+package source_processor {
+    class SourceProcessor {
+        +process(string file, shared_ptr<PKBSP> pkb)
+    }
+    
+    package tokenizer_sp {
+        class SimpleProgramTokenizer {
+            #void addSpecialCharacterToken()
+            +SimpleProgramTokenizer(istream* stream)
+            +vector<shared_ptr<Token>> tokenize()
+        }
+    }
+    
+    package ast {
+        package expressions {
+            class VariableNode {
+                -string name
+                -int associatedLineNum
+                +VariableNode(string name, int lineNum)
+                +string toString()
+                +string getVarName()
+                +int getAssociatedLineNum()
+            }
+            
+            class ExpressionNode {
+                -vector<string> sortedOp
+                -string op
+                -vector<string> variables
+                -vector<string> constants
+                -int lineNum
+                +ExpressionNode(string op, vector<string> var, vector<string>c, int index)
+                +string toString()
+                +vector<string> getSortedOp()
+                +vector<string> getVariables()
+                +vector<string> getConstants()
+                +int getLineNum()
+            }
+            
+            class ConstantNode {
+                -string value
+                +ConstantNode(string value)
+                +string toString()
+            }
+        }
+        
+        package statements {
+            class AssignNode extends StatementNode {
+                -shared_ptr<VariableNode> leftArg
+                -shared_ptr<ExpressionNode> rightArg
+                +AssignNode(shared_ptr<VariableNode> left, shared_ptr<ExpressionNode> right, int index)
+                +string toString()
+                +shared_ptr<VariableNode> getLeft()
+                +shared_ptr<ExpressionNode> getRight()
+                +vector<string> getRightVariables()
+                +vector<string> getConstants()
+                +void accept(ASTVistor& visitor)
+            }
+            
+            class CallNode extends StatementNode {
+                -shared_ptr<ProcedureNode> proc
+                +CallNode(shared_ptr<ProcedureNode> proc, int index)
+                +string toString()
+                +void accept(ASTVistor& visitor)
+                +string getProc()
+            }
+            
+            class ConditionNode {
+                -string condOp
+                -vector<string> varList
+                -vector<string> constList
+                +ConditionNode(vector<string> varList, vector<string> constList, string cond)
+                +string toString()
+                +vector<string> getVariables()
+                +vector<string> getConstants()
+            }
+            
+            class IfNode extends StatementNode {
+                -shared_ptr<ConditionNode> condition
+                -shared_ptr<vector<shared_ptr<StatementNode>>> thenStmtLst
+                -shared_ptr<vector<shared_ptr<StatementNode>>> elseStmtLst
+                +IfNode(shared_ptr<ConditionNode> cond, shared_ptr<vector<shared_ptr<StatementNode>>> then, shared_ptr<vector<shared_ptr<StatementNode>>> el, int index)
+                +string toString() 
+                +void accept(ASTVistor& visitor)
+                +shared_ptr<vector<shared_ptr<StatementNode>>> getThenStmtLst()
+                +shared_ptr<vector<shared_ptr<StatementNode>>> getElseStmtLst()
+                +shared_ptr<ConditionNode> getCond()
+            }
+            
+            class PrintNode extends StatementNode {
+                -shared_ptr<VariableNode> var
+                +PrintNode(shared_ptr<VariableNode> var, int index)
+                +string toString() 
+                +void accept(ASTVistor& visitor) 
+                +shared_ptr<VariableNode> getVar()
+            }
+            
+            class ReadNode extends StatementNode {
+                -shared_ptr<VariableNode> var
+                +ReadNode(shared_ptr<VariableNode> var, int index)
+                +string toString() 
+                +void accept(ASTVistor& visitor) 
+                +shared_ptr<VariableNode> getVar()
+            }
+            
+            class RelationalNode {
+                -string op
+                -shared_ptr<ExpressionNode> leftArg
+                -shared_ptr<ExpressionNode> rightArg
+                +RelationalNode(string op, shared_ptr<ExpressionNode> left, shared_ptr<ExpressionNode> right)
+                +string toString() 
+                +shared_ptr<ExpressionNode> getLeft()
+                +shared_ptr<ExpressionNode> getRight()
+                +string getOp()
+                +shared_ptr<vector<string>> getVariables()
+                +shared_ptr<vector<string>> getConstants()
+            }
+            
+            class StatementNode {
+                #int lineNum
+                +{abstract} string toString()
+                +{abstract} void accept(ASTVistor& visitor
+                +int getLineNum()
+                +void setLineNum(int index)
+            }
+            
+            class WhileNode extends StatementNode {
+                -shared_ptr<ConditionNode> condition
+                -shared_ptr<vector<shared_ptr<StatementNode>>> stmtLst
+                +WhileNode(shared_ptr<ConditionNode> cond, shared_ptr<vector<shared_ptr<StatementNode>>> sl, int index)
+                +shared_ptr<ConditionNode> getCond()
+                shared_ptr<vector<shared_ptr<StatementNode>>> getStmtLst()
+                +string toString()
+                +void accept(ASTVistor& visitor)
+            }
+        }
+        
+        abstract class ASTNode {
+            +{abstract} string toString()
+        }
+        
+        class ProcedureNode extends StatementNode {
+            -string name
+            -shared_ptr<vector<shared_ptr<StatementNode>>> stmtLst
+            +ProcedureNode(string procName, shared_ptr<vector<shared_ptr<StatementNode>>> stmtLst)
+            +string toString()
+            shared_ptr<vector<shared_ptr<StatementNode>>> getStmtLst()
+            +string getName()
+        }
+        
+        class ProgramNode extends ASTNode {
+            -shared_ptr<vector<shared_ptr<ProcedureNode>>> lst
+            +ProgramNode(shared_ptr<vector<shared_ptr<ProcedureNode>>> lst) 
+            +shared_ptr<vector<shared_ptr<ProcedureNode>>> getProcLst()
+            +string toString()
+        }
+            
+        RelationalNode -u-|> ASTNode
+        ConditionNode -u-|> ASTNode
+        ConstantNode -u-|> ASTNode
+        ExpressionNode -u-|> ASTNode
+        VariableNode -u-|> ASTNode
+    }
+        
+    package validator_sp {
+        class SimpleProgramValidator extends SyntaxValidator {
+            bool validateSpecialCharacter(string s)
+	        bool validateBrackets(vector<string> bracketArray)
+        }
+    }
+    
+    package parser {
+        class ParserManager {
+            -vector<shared_ptr<Token>> lst
+            -vector<shared_ptr<Token>>::iterator cur
+            -shared_ptr<int> curLineNum
+            +{static} shared_ptr<vector<shared_ptr<StatementNode>>> generateStmtList(vector<shared_ptr<Token>>::iterator& i, shared_ptr<int> lineNum)
+            +shared_ptr<ProgramNode> generateAST(vector<shared_ptr<Token>> tokens)
+            +vector<shared_ptr<Token>>::iterator getCur()
+            +vector<shared_ptr<Token>>::iterator getEnd()
+            +string peek()
+        }
+        
+        abstract class AbstractParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator& curToken, shared_ptr<int> lineNum)
+        }
+        
+        class AssignmentParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator &curToken, shared_ptr<int> lineNum)
+        }
+        
+        class CallParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator& curToken, shared_ptr<int> lineNum)
+        }
+        
+        class ConditionParser {
+            -unordered_set<string> ExprSymbols
+            -unordered_set<string> RelationSymbols
+            -unordered_set<string> ConditionSymbols
+            -bool isRelationSymbol(string cur)
+            -bool isConditionSymbol(string cur)
+            -bool isExprSymbol(string cur)
+            -vector<string> varList
+            -vector<string> constList
+            -string cond
+            +shared_ptr<ConditionNode> parseCondition(CurPtr curToken)
+            +void parseRelFactor(CurPtr tokens)
+            +void parseRelExpr(CurPtr tokens)
+            +void parseCondExpr(CurPtr tokens)
+            +void printVarList()
+            +void printConstList()
+        }
+        
+        class IfParser {
+            +shared_ptr<StatementNode> parse(CurPtr curToken, shared_ptr<int> lineNum)
+        }
+        
+        class OperatorParser {
+            +shared_ptr<ExpressionNode> parse(vector<shared_ptr<Token>>::iterator& curToken, int index)
+        }
+        
+        enum ParserType {
+            ASSIGN,
+            PROC,
+            READ,
+            PRINT,
+            CALL,
+            IF,
+            WHILE
+        }
+        
+        class ParserFactory {
+            -{static} map<string, ParserType> parserTypeMap 
+            +{static} shared_ptr<AbstractParser> getParser(string val)
+        }
+        
+        class PrintParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator& curToken, shared_ptr<int> lineNum)
+        }
+        
+        class ProcedureParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator& curToken, shared_ptr<int> lineNum)
+        }
+        
+        class ReadParser {
+            +shared_ptr<StatementNode> parse(vector<shared_ptr<Token>>::iterator& curToken, shared_ptr<int> lineNum)
+        }
+        
+        class WhileParser {
+            +shared_ptr<StatementNode> parse(CurPtr curToken, shared_ptr<int> lineNum)
+        }
+        
+        ParserFactory -- ParserType
+        
+        AssignmentParser .u..|> AbstractParser
+        IfParser .u..|> AbstractParser
+        WhileParser .u..|> AbstractParser
+        PrintParser .u..|> AbstractParser
+        CallParser .u..|> AbstractParser
+        ReadParser .u..|> AbstractParser
+        ProcedureParser .u..|> AbstractParser
+        
+        ParserFactory ..> AbstractParser
+        
+        ParserManager o-- ConditionParser
+        ParserManager o-- OperatorParser
+        ParserManager o-- ParserFactory
+        ParserManager o-- SimpleProgramValidator
+        ParserManager --> "*" ASTNode : "Generate"
+    }
+    
+    package storage_writer {
+        class StorageWriter {
+            -shared_ptr<IEntityWriter> entityWriter
+            -shared_ptr<IRelationshipWriter> relationshipWriter
+            +StorageWriter(shared_ptr<PKBSP>& writer)
+            +shared_ptr<IEntityWriter> getEntityWriter()
+            +shared_ptr<IRelationshipWriter> getRelationshipWriter()
+        }
+        
+        interface IEntityWriter {
+            +void insertProcedure(string procedureName)
+            +void insertVariable(string varName)
+            +void insertConstant(string value)
+            +void insertRead(shared_ptr<ReadNode> node)
+            +void insertPrint(shared_ptr<PrintNode> node)
+            +void insertAssign(shared_ptr<AssignNode> node)
+            +void insertCall(shared_ptr<CallNode> node)
+            +void insertIf(shared_ptr<IfNode> node)
+            +void insertWhile(shared_ptr<WhileNode> node)
+            +void insertPattern(shared_ptr<AssignNode> node)
+        }
+        
+        
+        interface IRelationshipWriter {
+            +void insertModifiesS(int stmtNo, string& varName)
+            +void insertModifiesP(string& procName, string& varName)
+            +void insertUsesS(int stmtNo, string& varName)
+            +void insertUsesP(string& procName, string& varName)
+            +void insertFollows(int prev, int next)
+            +void insertParents(int parent, int child)
+        }
+        
+        class EntityWriter {
+            -shared_ptr<PKBSP> kbWriter
+            +void insertProcedure(string procedureName)
+            +void insertVariable(string varName)
+            +void insertConstant(string value)
+            +void insertRead(shared_ptr<ReadNode> node)
+            +void insertPrint(shared_ptr<PrintNode> node)
+            +void insertAssign(shared_ptr<AssignNode> node)
+            +void insertCall(shared_ptr<CallNode> node)
+            +void insertIf(shared_ptr<IfNode> node)
+            +void insertWhile(shared_ptr<WhileNode> node)
+            +void insertPattern(shared_ptr<AssignNode> node)
+        }
+        
+        class RelationshipWriter {
+            -shared_ptr<PKBSP> kbWriter
+            +void insertModifiesS(int stmtNo, string& varName)
+            +void insertModifiesP(string& procName, string& varName)
+            +void insertUsesS(int stmtNo, string& varName)
+            +void insertUsesP(string& procName, string& varName)
+            +void insertFollows(int prev, int next)
+            +void insertParents(int parent, int child)
+        }
+        
+        
+        EntityWriter .u.|> IEntityWriter
+        RelationshipWriter .u.|> IRelationshipWriter
+        
+        StorageWriter *-- IEntityWriter
+        StorageWriter *-- IRelationshipWriter
+    }
+    
+    package design_extractor {
+        class DesignExtractor {
+            -unique_ptr<EntityExtractor> entityExtractor
+            -unique_ptr<RelationshipExtractor> relationshipExtractor
+            +DesignExtractor(shared_ptr<StorageWriter>& storageWriter)
+            +void extract(shared_ptr<ProgramNode>& node)
+        }
+        
+        class RelationshipContext {
+            -unique_ptr<Strategy> strategy
+            +void setStrategy(unique_ptr<Strategy> strategy)
+	        +void executeStrategy(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+        }
+        
+        package extractors {
+            class BaseExtractor {
+                +void extractProcedure(shared_ptr<ProcedureNode>& node)
+                +void extractStatementList(vector<shared_ptr<StatementNode>>	stmtList)
+                +void extractStatement(shared_ptr<StatementNode>& node)
+            }
+            
+            class EntityExtractor extends BaseExtractor {
+                -shared_ptr<IEntityWriter> entityWriter
+                -void extractProcedure(shared_ptr<ProcedureNode>& node)
+                -void extractStatement(shared_ptr<StatementNode>& node)
+                -void extractConstantsFromConditionNode(shared_ptr<ConditionNode>)
+                -void extractVariablesFromConditionNode(shared_ptr<ConditionNode>)
+                +EntityExtractor(shared_ptr<IEntityWriter> entityWriter)
+                +void extract(shared_ptr<ProgramNode>& node)
+                +void visit(shared_ptr<IfNode>& ifNode)
+                +void visit(shared_ptr<WhileNode>& whileNode)
+                +void visit(shared_ptr<CallNode>& forNode)
+                +void visit(shared_ptr<AssignNode>& assignNode)
+                +void visit(shared_ptr<PrintNode>& printNode)
+                +void visit(shared_ptr<ReadNode>& readNode)
+            }
+            
+            class RelationshipExtractor extends BaseExtractor {
+                -RelationshipContext context
+                -string currentProcedureName
+                -shared_ptr<IRelationshipWriter> relationshipWriter
+                -void extractProcedure(shared_ptr<ProcedureNode>& node)
+                -void extractStatementList(vector<shared_ptr<StatementNode>> stmtList)
+                -void extractStatement(shared_ptr<StatementNode>& node)
+                RelationshipExtractor(shared_ptr<IRelationshipWriter> relationshipWriter)
+                +void extract(shared_ptr<ProgramNode>& node)
+                +void visit(shared_ptr<IfNode>& ifNode)
+                +void visit(shared_ptr<WhileNode>& whileNode)
+                +void visit(shared_ptr<CallNode>& forNode)
+                +void visit(shared_ptr<AssignNode>& assignNode)
+                +void visit(shared_ptr<PrintNode>& printNode)
+                +void visit(shared_ptr<ReadNode>& readNode)
+            }
+        }
+        
+        package visitor {
+            interface ASTVisitor {
+                +void visit(shared_ptr<IfNode>& ifNode)
+                +void visit(shared_ptr<WhileNode>& whileNode)
+                +void visit(shared_ptr<CallNode>& forNode)
+                +void visit(shared_ptr<AssignNode>& assignNode)
+                +void visit(shared_ptr<PrintNode>& printNode)
+                +void visit(shared_ptr<ReadNode>& readNode)
+            }
+        }
+        
+        package relationship_extraction_strategies {
+            class Strategy {
+                +{abstract} void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+                +void insertUsesRelationship(shared_ptr<IRelationshipWriter> pkb, string varName, int lineNum, string currProcName)
+                +void insertModifiesRelationship(shared_ptr<IRelationshipWriter> pkb, string varName, int lineNum, string currProcName)
+            }
+            
+            class AssignStmtStrategy extends Strategy {
+                +void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+            }
+            
+            class IfStmtStrategy extends Strategy {
+                +void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+            }
+            
+            class PrintStmtStrategy extends Strategy {
+                +void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+            }
+            
+            class ReadStmtStrategy extends Strategy {
+                +void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+            }
+            
+            class WhileStmtStrategy extends Strategy {
+                +void execute(shared_ptr<ASTNode> node, shared_ptr<IRelationshipWriter> pkb, string currProcName)
+            }
+        }
+
+        package relationship_managers {
+            class ParentManager {
+                -{static} vector<int> parentStack{}
+                +{static} const vector<int>& getParentStack()
+                +{static} void clearParentStack()
+                +{static} void removeLastParent()
+                +{static} void addStatementToStack(int parent)
+                +{static} void addChild(int child, shared_ptr<IRelationshipWriter> pkb)
+            }
+            
+            class FollowsManager {
+                -{static} vector<vector<int>> followsStack{}
+                +{static} void clearFollowsStack()
+                +{static} void addNewNestingLevel()
+                +{static} void removeLastNestingLevel()
+                +{static} void addStatementToStack(int stmtNum)
+                +{static} void addFollows(int stmtNum, shared_ptr<IRelationshipWriter> pkb)
+            }
+        }
+        
+        RelationshipExtractor --|> ASTVisitor
+        RelationshipExtractor *-- RelationshipContext
+        RelationshipContext *-- Strategy
+        EntityExtractor --|> ASTVisitor
+        DesignExtractor *-- EntityExtractor
+        DesignExtractor *-- RelationshipExtractor
+        IEntityWriter --* EntityExtractor
+        IRelationshipWriter --* RelationshipExtractor
+        Strategy .. FollowsManager
+        Strategy .. ParentManager
+    }
+    
+    
+    SourceProcessor o-- "1" SimpleProgramTokenizer
+    SourceProcessor o-- "1" ParserManager
+    SourceProcessor o-- "1" StorageWriter
+    SourceProcessor o-- "1" DesignExtractor
+    
+    SimpleProgramTokenizer -u-|> Tokenizer
+}
+
+StaticProgramAnalyser "1" *--- SourceProcessor
+@enduml

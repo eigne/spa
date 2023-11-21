@@ -1,0 +1,35 @@
+procedure Barbie {
+	print sasha;
+	gloria = b * 8;
+	c = 2;
+	a = 4 - gloria;
+	call Ken;
+	while (sasha < c) {
+		sasha = b + c * a;
+		if (sasha > 1) then {
+			read a;
+			gloria = gloria + b + c; 
+		} else {
+			b = a % b + c * a;
+			call Ruth;
+		}
+		b = a - b; 
+	}
+	read sasha;
+	gloria = b / c * a; 
+}
+
+procedure Ken {
+	if (gloria > sasha) then {
+		sasha = a - 4;
+		call Ruth; 
+	} else {
+		gloria = 2; 
+	}
+}
+
+procedure Ruth {
+	while (16 != (b + c)) {
+		read c; 
+	}
+}

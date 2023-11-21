@@ -1,0 +1,49 @@
+@startuml
+participant StaticProgramAnalyser as SPA
+participant SourceProcessor as SP
+participant SimpleProgramTokenizer as SPT
+participant ParserManager as PM
+participant DesignExtractor as DE
+participant StorageWriter as SW
+
+activate SPA
+SPA -> SP: processSourceFile(string sourceFile)
+activate SP
+
+activate SPT
+
+SP -> SPT: tokenize()
+SPT --> SP: vector<shared_ptr<Token>>
+
+deactivate SPT
+
+activate PM
+
+alt SIMPLE program no errors
+    SP -> PM: generateAST(vector<shared_ptr<Token>> tokens)
+    PM --> SP: shared_ptr<ProgramNode> root
+
+    deactivate PM
+
+    activate DE
+
+    SP -> DE: extract(shared_ptr<ProgramNode> root)
+
+    activate SW
+
+    DE -> SW: insertEntity/insertRelation()
+    SW --> DE
+
+    deactivate SW
+
+    DE --> SP
+
+    deactivate DE
+
+    SP --> SPA
+else Syntax/Semantic error
+    SP --> SPA: "Syntax/Semantic Error"
+end
+
+deactivate SP
+@enduml

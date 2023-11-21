@@ -1,0 +1,347 @@
+@startuml
+class PKB
+class Abstractions
+class Entities
+class PKBSP
+class PKBQPS
+class DoubleMap <T, U, Container>
+class Set <T>
+class HeadContainer <T>
+
+class DoubleMap {
+-forward : unordered_map<T, Container U> 
+-backward : unordered_map<U, Container T> 
+
++ insertForward(T key, U value)
++ insertForwardHeadAndBody(T key, U value)
++ insertBackward(U key, T value)
++ insertBackwardHeadAndBody(U key, T value)
++ insertBoth(T forwardKey, U forwardValue)
++ insertBothHeadAndBody(T forwardKey, U forwardValue)
++ insertEmpty(T forwardKey)
++ lookupForward(T key) : Container<U>
++ lookupBackward(U key) : Container<T>
++ lookupBackward(U key, function<bool(const T&)>) : Container<T>
++ getAllForwardKeys() : unordered_set<T>
++ getAllBackwardKeys() : unordered_set<U>
++ getForwardMap() : unordered_map<T, Container<U>>
++ empty() : bool
+}
+
+class Set {
+- set : unordered_set<T>
++ insertElement(T element)
++ findElement(T element) : bool
++ removeElement(T element)
++ replaceElement(T oldElement, T newElement) : bool
++ getAllElements() : unordered_set<T>
+}
+
+class HeadContainer {
+    -unordered_set<T> head
+    -unordered-set<T> body
+    
+    +getHead() : unordered_set<T>
+    +getBody() : unordered_set<T>
+    +insert(T element)
+    +insertHeadAndBody(T element)
+    +begin() : iter
+    +end() : iter
+    +empty() : bool
+}
+
+class PKB {
+- entities : Entities
+- abstractions : Abstractions
+
++ insertRead(int lineNumber, string entityRead)
++ insertPrint(int lineNumber, string entityPrinted)
++ insertAssign(int lineNumber, string entityAssigned)
++ insertWhile(int lineNumber, vector<string> entityInWhile)
++ insertIf(int lineNumber, vectorstring> entityInIf)
++ insertProcedure(string procedureName)
++ insertVariable(string variable)
++ insertCall(int lineNumber, string procedureCalled)
++ insertCalls(string caller, string procedureCalled)
++ insertCallsStar(string caller, string procedureCalled)
++ insertConstant(string constant)
+    
++ insertUses(int statementNumber, string variable)
++ insertUses(string procedureName, string variable)
++ insertModifies(int statementNumber, string variable)
++ insertModifies(string procedureName, string variable)
++ insertFollows(int before, int after)
++ insertFollowsStar(int before, int after)
++ insertParents(int parent, int child)
++ insertParentsStar(int parent, int child)
++ insertPattern(int statementNumber, vector<string> postFixExpression)
+    
++ containsProcedure(string procedureName) : bool
++ getCallsMap : unordered_map<string, unordered_set<string>>
++ getCallsStarMap : unordered_map<string, unordered_set<string>>
++ getCallsReversedMap : unordered_map<string, unordered_set<string>>
++ getCallsStarReversedMap : unordered_map<string, unordered_set<string>>
++ getUsesProcedureMap : unordered_map<string, unordered_set<string>>
++ getModifiesProcedureMap : unordered_map<string, unordered_set<string>>
+
++ getAllReads() : unordered_set<int>
++ getAllPrints() : unordered_set<int>
++ getAllAssigns() : unordered_set<int>
++ getAllWhiles() : unordered_set<int>
++ getAllIfs() : unordered_set<int>
++ getAllStatements() : unordered_set<int>
++ getAllCalls() : unordered_set<int>
++ getAllProcedures() : unordered_set<string>
++ getAllVariables() : unordered_set<string>
++ getAllConstants() : unordered_set<string>
+    
++ getAllVariablesUsedInStatement(int statementNumber) : unordered_set<string>
++ getAllVariablesUsedInProcedure(string procedureName) : unordered_set<string>
++ getStatementsThatUseVariable(string variable) : unordered_set<int>
++ getStatementsThatUseAnyVariable() : unordered_set<int>
++ getProceduresThatUseVariable(string procedureName) : unordered_set<string>
++ getProceduresThatUseAnyVariable() : unordered_set<string>
+    
++ getVariablesModifiedInStatement(int statementNumber) : unordered_set<string>
++ getVariablesModifiedInProcedure(string procedureName) : unordered_set<string>
++ getStatementsThatModifyVariable(string variable) : unordered_set<int>
++ getStatementsThatModifyAnyVariable() : unordered_set<int>
++ getProceduresThatModifyVariable(string variable) : unordered_set<string>
++ getProceduresThatModifyAnyVariable() : unordered_set<string>
++ getFollows(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithFollows() : unordered_set<int>
++ getAllWithBefore() : unordered_set<int>
++ getBefore(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getChild(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithChild() : unordered_set<int>
++ getParent(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithParent() : unordered_set<int>
++ getProceduresCalledBy(string procedure, bool onlyImmediate) : unordered_set<string>
++ getProceduresCalling(string procedure, bool onlyImmediate) : unordered_set<string>
++ getProcedureCalledByCall(int lineNumber) : string
++ doCallsExist() : bool
++ getVariablesUsedInIf(int lineNumber) : unordered_set<string>
++ getIfsThatUseVariable(string variable) : unordered_set<int>
++ getIfsThatUseAnyVariable() : unordered_set<int>
+
++ getVariablesUsedInWhile(int lineNumber) : unordered_set<string>
++ getWhilesThatUseVariable(string variable) : unordered_set<int>
++ getWhilesThatUseAnyVariable() : unordered_set<int>
+
++ getProceduresThatCall() : unordered_set<string>
++ getAllCalledProcedures() : unordered_set<string>
+
++ getNext(int lineNumber) : unordered_set<int>
++ getAllWithNext() : unordered_set<int>
++ getAllWithPrevious() : unordered_set<int>
++ getPrevious(int lineNumber) : unordered_set<int>
+
++ hasMatchingPattern(int statementNumber, vector<string> postfixExpr, bool exactMatch)
++ isSubarray(vector<string> array, vector<string> subarray, bool exactMatch)
++ turbo()
+}
+
+class Entities {
+- DoubleMap<int, string> reads
+- DoubleMap<int, string> prints
+- DoubleMap<int, string> assigns
+- DoubleMap<int, string> whiles
+- DoubleMap<int, string> ifs
+- DoubleMap<int, string> calls
+    
+- Set<string> procedures
+- Set<string> variables
+- Set<string> constants
+    
++ insertRead(int lineNumber, string entityRead)
++ insertPrint(int lineNumber, string entityPrinted)
++ insertAssign(int lineNumber, string entityAssigned)
++ insertWhile(int lineNumber, vector<string> entityInWhile)
++ insertIf(int lineNumber, vectorstring> entityInIf)
++ insertProcedure(string procedureName)
++ insertVariable(string variable)
++ insertCall(int lineNumber, string procedureCalled)
++ insertConstant(string constant)
++ containsProcedure(string procedureName) : bool
+    
++ getAllReads() : unordered_set<int>
++ getAllPrints() : unordered_set<int>
++ getAllAssigns() : unordered_set<int>
++ getAllWhiles() : unordered_set<int>
++ getAllIfs() : unordered_set<int>
++ getAllStatements() : unordered_set<int>
++ getAllCalls() : unordered_set<int>
++ getAllProcedures() : unordered_set<string>
++ getAllVariables() : unordered_set<string>
++ getAllConstants() : unordered_set<string>
++ doCallsExist() : bool
+    +getAllProcedures() : unordered_set<string>
+    +getAllVariables() : unordered_set<string>
+    +getAllConstants() : unordered_set<string>
+    +getProcedureCalledByCall(int lineNumber) : string
+    +getVariablesUsedInIf(int lineNumber) : unordered_set<string>
+    +getIfsThatUseVariable(string variable) : unordered_set<int>
+    +getIfsThatUseAnyVariable() : unordered_set<int>
+    +getVariablesUsedInWhile(int lineNumber) : unordered_set<string>
+    +getWhilesThatUseVariable(string variable) : unordered_set<int>
+    +getWhilesThatUseAnyVariable() : unordered_set<int>
+}
+
+class Abstractions {
+    -DoubleMap<int, string> usesStmt
+    -DoubleMap<string, string> usesProc
+    -DoubleMap<int, string> modifiesStmt
+    -DoubleMap<string, string> modifiesProc
+    -DoubleMap<int, int, HeadContainer> follows
+    -DoubleMap<int, int, HeadContainer> parents
+    -DoubleMap<string, string, HeadContainer> callsIndexedByProcName
+    -DoubleMap<int, int> nexts
+    -DoubleMap<int, vector<string>> patterns
+    
+    +insertCalls(string caller, string procedureCalled)
+    +insertCallsStar(string caller, string procedureCalled)
+    +insertUses(lineNumber, string variable)
+    +insertUses(string procedureName, string variable)
+    +insertModifies(int lineNumber, string variable)
+    +insertModifies(string procedureName, string variable)
+    +insertFollows(int before, int after)
+    +insertFollowsStar(int before, int after)
+    +insertParents(int parent, int child)
+    +insertParentsStar(int parent, int child)
+    +insertNext(int previous, int next)
+    +insertPattern(int lineNumber, vector<string> postfixExpression)
+    +getCallsMap() : unordered_map<string, unordered_set<string>>
+    +getCallsStarMap() : unordered_map<string, unordered_set<string>>
+    +getCallsReversedMap() : unordered_map<string, unordered_set<string>>
+    +getCallsStarReversedMap() : unordered_map<string, unordered_set<string>>
+    +getUsesProcedureMap() : unordered_map<string, unordered_set<string>>
+    +getModifiesProcedureMap() : unordered_map<string, unordered_set<string>>    
+    
+    +getVariablesUsedInStatement(int lineNumber) : unordered_set<string>
+    +getVariablesUsedInProcedure(string procedureName) : unordered_set<string>
+    +getStatementsThatUseVariable(string variable) : unordered_set<int>
+    +getStatementsThatUseAnyVariable() : unordered_set<int>
+    +getProceduresThatUseVariable(string variable) : unordered_set<string>
+    +getProceduresThatUseAnyVariable() : unordered_set<string>
+    
+    +getVariablesModifiedInStatement(int lineNumber) : unordered_set<string>
+    +getVariablesModifiedInProcedure(string procedureName) : unordered_set<string>
+    +getStatementsThatModifyVariable(string variable) : unordered_set<int>
+    +getStatementsThatModifyAnyVariable() : unordered_set<int>
+    +getProceduresThatModifyVariable(string variable) : unordered_set<string>
+    +getProceduresThatModifyAnyVariable() : unordered_set<string>
+    +getFollows(int lineNumber, bool onlyImmediate) : unordered_set<int>
+    +getAllWithFollows() : unordered_set<int>
+    +getAllWithBefore() : unordered_set<int>
+    +getBefore(int lineNumber, bool onlyImmediate) : unordered_set<int>
+    +getChild(int lineNumber, bool onlyImmediate) : unordered_set<int>
+    +getAllWithChild() : unordered_set<int>
+    +getParent(int lineNumber, bool onlyImmediate) : unordered_set<int>
+    +getAllWithParent() : unordered_set<int>
+    +getProceduresCalledBy(string procedure, bool onlyImmediate) : unordered_set<string>
+    +getProceduresCalling(string procedure, bool onlyImmediate) : unordered_set<string>
+    +getProceduresThatCall() : unordered_set<string>
+    +getAllCalledProcedures() : unordered_set<string>
+    +getNext(int lineNumber) : unordered_set<int>
+    +getAllWithNext() : unordered_set<int>
+    +getAllWithPrevious() : unordered_set<int>
+    +hasMatchingPattern(int lineNumber, vector<string> postfixExpression, bool exactMatch) : bool
+    +isSubarray(vector<string> array, vector<string> subarray, bool exactMatch) : bool
+}
+
+class PKBSP {
++ insertRead(int lineNumber, string entityRead)
++ insertPrint(int lineNumber, string entityPrinted)
++ insertAssign(int lineNumber, string entityAssigned)
++ insertWhile(int lineNumber, vector<string> entityInWhile)
++ insertIf(int lineNumber, vectorstring> entityInIf)
++ insertProcedure(string procedureName)
++ insertVariable(string variable)
++ insertCall(int lineNumber, string procedureCalled)
++ insertCalls(string caller, string procedureCalled)
++ insertCallsStar(string caller, string procedureCalled)
++ insertConstant(string constant)
+    
++ insertUses(int statementNumber, string variable)
++ insertUses(string procedureName, string variable)
++ insertModifies(int statementNumber, string variable)
++ insertModifies(string procedureName, string variable)
++ insertFollows(int before, int after)
++ insertFollowsStar(int before, int after)
++ insertParents(int parent, int child)
++ insertParentsStar(int parent, int child)
++ insertPattern(int statementNumber, vector<string> postFixExpression)
+    
++ containsProcedure(string procedureName) : bool
++ getCallsMap : unordered_map<string, unordered_set<string>>
++ getCallsStarMap : unordered_map<string, unordered_set<string>>
++ getCallsReversedMap : unordered_map<string, unordered_set<string>>
++ getCallsStarReversedMap : unordered_map<string, unordered_set<string>>
++ getUsesProcedureMap : unordered_map<string, unordered_set<string>>
++ getModifiesProcedureMap : unordered_map<string, unordered_set<string>>
+}
+
+class PKBQPS {
++ getAllReads() : unordered_set<int>
++ getAllPrints() : unordered_set<int>
++ getAllAssigns() : unordered_set<int>
++ getAllWhiles() : unordered_set<int>
++ getAllIfs() : unordered_set<int>
++ getAllStatements() : unordered_set<int>
++ getAllCalls() : unordered_set<int>
++ getAllProcedures() : unordered_set<string>
++ getAllVariables() : unordered_set<string>
++ getAllConstants() : unordered_set<string>
+    
++ getAllVariablesUsedInStatement(int statementNumber) : unordered_set<string>
++ getAllVariablesUsedInProcedure(string procedureName) : unordered_set<string>
++ getStatementsThatUseVariable(string variable) : unordered_set<int>
++ getStatementsThatUseAnyVariable() : unordered_set<int>
++ getProceduresThatUseVariable(string procedureName) : unordered_set<string>
++ getProceduresThatUseAnyVariable() : unordered_set<string>
+    
++ getVariablesModifiedInStatement(int statementNumber) : unordered_set<string>
++ getVariablesModifiedInProcedure(string procedureName) : unordered_set<string>
++ getStatementsThatModifyVariable(string variable) : unordered_set<int>
++ getStatementsThatModifyAnyVariable() : unordered_set<int>
++ getProceduresThatModifyVariable(string variable) : unordered_set<string>
++ getProceduresThatModifyAnyVariable() : unordered_set<string>
++ getFollows(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithFollows() : unordered_set<int>
++ getAllWithBefore() : unordered_set<int>
++ getBefore(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getChild(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithChild() : unordered_set<int>
++ getParent(int statementNumber, bool onlyImmediate) : unordered_set<int>
++ getAllWithParent() : unordered_set<int>
++ getProceduresCalledBy(string procedure, bool onlyImmediate) : unordered_set<string>
++ getProceduresCalling(string procedure, bool onlyImmediate) : unordered_set<string>
++ getProcedureCalledByCall(int lineNumber) : string
++ doCallsExist() : bool
++ getVariablesUsedInIf(int lineNumber) : unordered_set<string>
++ getIfsThatUseVariable(string variable) : unordered_set<int>
++ getIfsThatUseAnyVariable() : unordered_set<int>
+
++ getVariablesUsedInWhile(int lineNumber) : unordered_set<string>
++ getWhilesThatUseVariable(string variable) : unordered_set<int>
++ getWhilesThatUseAnyVariable() : unordered_set<int>
+
++ getProceduresThatCall() : unordered_set<string>
++ getAllCalledProcedures() : unordered_set<string>
+
++ getNext(int lineNumber) : unordered_set<int>
++ getAllWithNext() : unordered_set<int>
++ getAllWithPrevious() : unordered_set<int>
++ getPrevious(int lineNumber) : unordered_set<int>
+    
++ hasMatchingPattern(int statementNumber, vector<string> postfixExpr, bool exactMatch)
+}
+
+PKB -u- DoubleMap
+PKB -u- Set
+PKB -r- PKBQPS
+PKB -l- PKBSP
+PKB --- Abstractions
+PKB --- Entities
+DoubleMap -u- HeadContainer
+@enduml

@@ -1,0 +1,90 @@
+1 - CallsT: procedure, procedure1 (valid)
+procedure p, p1;
+Select p such that Calls*(p, p1)
+procedure, x1, y3, x2, call, cumcum, print, diediedie
+5000
+2 - CallsT: procedure, procedure1 (pair)
+procedure p, p1;
+Select <p, p1> such that Calls*(p, p1)
+procedure LmaO69HEHE, procedure x1, procedure y3, procedure x2, procedure call, x1 LmaO69HEHE, x1 x2, x1 call, y3 LmaO69HEHE, y3 x1, y3 x2, y3 call, x2 LmaO69HEHE, x2 call, call LmaO69HEHE, cumcum print, cumcum diediedie, cumcum idw2DoThis, print idw2DoThis, diediedie idw2DoThis
+5000
+3 - CallsT: procedure, procedure (same, invalid)
+procedure p;
+Select p such that Calls*(p, p)
+
+5000
+4 - CallsT: procedure, wildcard
+procedure p;
+Select p such that Calls*(p, _)
+procedure, x1, y3, x2, call, cumcum, diediedie, print
+5000
+5 - CallsT: wildcard, procedure
+procedure p;
+Select p such that Calls*(_, p)
+LmaO69HEHE, x1, y3, x2, call, diediedie, idw2DoThis, print
+5000
+6 - CallsT: procedure, ident (valid)
+procedure p;
+Select p such that Calls*(p, "LmaO69HEHE")
+procedure, x1, y3, x2, call
+5000
+7 - CallsT: procedure, ident (no answer)
+procedure p;
+Select p such that Calls(p, "NonExistent")
+
+5000
+8 - CallsT: ident, procedure (valid)
+procedure p;
+Select p such that Calls*("cumcum", p)
+print, diediedie, idw2DoThis
+5000
+9 - CallsT: ident, procedure (no answer)
+procedure p;
+Select p such that Calls*("idw2DoThis", p)
+
+5000
+10 - CallsT: ident, ident (valid)
+
+Select BOOLEAN such that Calls*("print", "idw2DoThis")
+TRUE
+5000
+11 - CallsT: ident, ident (invalid)
+
+Select BOOLEAN such that Calls*("x3", "HanSolo")
+FALSE
+5000
+12 - CallsT: procedure, ident (invalid)
+procedure p;
+Select p such that Calls*(p, "NonExistent")
+
+5000
+13 - CallsT: wildcard, ident (true)
+
+Select BOOLEAN such that Calls*(_, "call")
+TRUE
+5000
+14 - CallsT: wildcard, ident (false)
+
+Select BOOLEAN such that Calls*(_, "HanSolo")
+FALSE
+5000
+15 - CallsT: ident, wildcard (true)
+
+Select BOOLEAN such that Calls*(_, "diediedie")
+TRUE
+5000
+16 - CallsT: ident, wildcard (false)
+
+Select BOOLEAN such that Calls*("HanSolo", _)
+FALSE
+5000
+17 - CallsT: wildcard, wildcard
+
+Select BOOLEAN such that Calls*(_, _)
+TRUE
+5000
+18 - Invalid Syntax Error (space before star)
+procedure p1, p2;
+Select p1 such that Calls *(p1, p2)
+SyntaxError
+5000

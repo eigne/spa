@@ -1,0 +1,25 @@
+1 - Q1
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select c with not c.value = a.stmt#
+1, 2, 4, 8, 16
+5000
+2 - Q2
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select c with not a.stmt# = 3 and c.value = 2
+2
+5000
+3 - Q3
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select a such that not Modifies(a, "gloria")
+3, 4, 7, 11, 13, 17
+5000
+4 - Q4
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select a with v.varName = "gloria" such that not Modifies(a, v)
+3, 4, 7, 11, 13, 17
+5000
+5 - Q5
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select a with not v.varName = "gloria" such that Modifies(a, v)
+3, 4, 7, 11, 13, 17
+5000

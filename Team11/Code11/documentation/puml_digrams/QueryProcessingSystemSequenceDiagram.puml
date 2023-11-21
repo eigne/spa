@@ -1,0 +1,139 @@
+@startuml
+participant QueryProcessingSystem as qps
+participant Tokenizer as tok
+participant TokenSplitter as splitter
+participant QPSValidator as validator
+participant TokenGroupSyntaxValidator as syntax
+participant TokenGroupSemanticValidator as semantic
+participant QueryExtractor as qEx
+participant Query as q
+participant Clause as clause
+participant TokenGroupExtractor as tEx
+participant QueryEvaluator as evaluator
+participant SynonymVisitor as sv
+participant DesignEntityVisitor as ev
+participant StorageReader as reader
+
+activate qps
+[-> qps : evaluateQuery(pqlQuery)
+
+activate tok
+qps -> tok : tokenize(pqlQuery)
+tok --> qps : vector<shared_ptr<TokenGroup>>
+deactivate tok
+
+activate validator
+qps -> validator : validate(tokenGroups)
+
+activate syntax
+loop for every TokenGroup
+	validator -> syntax : parseAndValidateSyntax(tokenGroup)
+	syntax --> validator : hasSyntaxError?
+end
+deactivate syntax
+
+note right: short circuits evaluation upon finding an error
+
+activate semantic
+loop for every TokenGroup
+	validator -> semantic : validateSemantics(tokenGroup)
+	semantic --> validator : hasSemanticError?
+end
+deactivate semantic
+
+validator --> qps : hasError?
+deactivate validator
+
+activate qEx
+qps -> qEx : extractQuery(tokenGroups)
+
+create q
+qEx -> q : create Query
+activate q
+q --> qEx
+
+loop for every TokenGroup
+	activate tEx
+	qEx -> tEx : extractTokenGroup(tokenGroup, query)
+	tEx -> q : addQueryComponent()
+	q --> tEx
+	tEx --> qEx
+	deactivate tEx
+end
+
+qEx --> qps : query
+deactivate qEx
+
+activate evaluator
+qps -> evaluator : evaluateQuery(query)
+
+evaluator -> q : getSynonyms()
+q --> evaluator : vector<Synonym>
+activate reader
+activate sv
+loop for every synonym
+	evaluator -> q : initializeSynonym(synonymVisitor)
+	q -> sv : initializePossibilities(synonym)
+	sv -> reader : getAllOfEntity()
+	reader --> sv : entity possibilities
+	sv -> q : set initial synonym possibilities
+	q --> sv
+	sv --> q
+	q --> evaluator
+end
+deactivate sv
+
+loop while there are unevaluated clauses
+	evaluator -> q : getNextClause()
+	loop for every clause
+		q -> clause : getClausePriority()
+		activate clause
+		clause --> q : clausePriority
+		deactivate clause
+	end
+	q --> evaluator : unevaluated clause with minimum priority
+
+	evaluator -> clause : evaluateClause(reader)
+	activate clause
+	create ev
+	clause -> ev
+	activate ev
+	ev --> clause		
+
+	clause -> ev : visitDesignEntity(designEntity1)
+	ev -> reader : query relevant design entities from PKB
+	reader --> ev : design entities
+	ev --> clause : design entities
+	clause -> q : intersectDesignEntity2(queriedDesignEntities)
+	q --> clause : isIntersectionEmpty
+	
+	clause -> ev : visitDesignEntity(designEntity2)
+	ev -> reader : query relevant design entities from PKB
+	reader --> ev : design entities
+	ev --> clause : design entities
+	clause -> q : intersectDesignEntity1(queriedDesignEntities)
+	q --> clause : isIntersectionEmpty
+
+	deactivate ev
+	clause --> evaluator : isIntersectionEmpty
+	deactivate clause
+end
+note left
+short circuits evaluation and returns no results
+upon finding a clause with an empty intersection
+end note
+
+deactivate reader
+
+evaluator -> q : getSelectedResult()
+q --> evaluator : result
+deactivate q
+
+evaluator --> qps : result
+deactivate evaluator
+
+
+[<- qps : result
+deactivate qps
+
+@enduml

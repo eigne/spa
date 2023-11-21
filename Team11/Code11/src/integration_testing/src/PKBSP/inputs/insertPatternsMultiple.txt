@@ -1,0 +1,16 @@
+procedure main {
+	x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+    if (ifVar > 0) then {
+        x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+        if (ifVar2 > 0) then {
+            x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+        } else {
+            x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+        }
+    } else {
+        x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+    }
+    while (loopVar > 0) {
+        x = a + a + b - c / d * e + (a + b - (c / d * (e) + b));
+    }
+}

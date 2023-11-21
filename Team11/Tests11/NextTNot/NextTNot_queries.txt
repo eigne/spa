@@ -1,0 +1,540 @@
+1 - Next: stmt number, stmt number 
+stmt s;
+Select s such that not Next*(1, 2)
+
+5000
+2 - Next: stmt number, stmt number 
+read r;
+Select r such that not Next*(3, 4)
+
+5000
+3 - Next: stmt number, wildcard 
+stmt s;
+Select s such that not Next*(15, _)
+
+5000
+4 - Next: stmt number, wildcard 
+stmt s;
+Select s such that not Next*(30, _)
+
+5000
+5 - Next: stmt number, stmt 
+stmt s;
+Select s such that not Next*(16, s)
+1, 2, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+6 - Next: stmt number, stmt 
+stmt s;
+Select s such that not Next*(17, _)
+
+5000
+7 - Next: wildcard, wildcard
+stmt s;
+Select s such that not Next*(_, _)
+
+5000;
+8 - Next: stmt number, read 
+print p;
+Select p such that not Next*(31, _)
+
+5000
+9 - Next: stmt number, read 
+stmt s; read r;
+Select s such that not Next*(16, r)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+10 - Next: stmt number, print 
+read r; print p;
+Select r such that not Next*(13, p)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+11 - Next: stmt number, print 
+stmt s; print p;
+Select s such that not Next*(28, p)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+12 - Next: stmt number, while 
+stmt s; while w;
+Select s such that not Next*(20, w)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+13 - Next: stmt number, while 
+stmt s; while w;
+Select s such that not Next*(12, w)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+14 - Next: stmt number, if 
+stmt s; if if;
+Select if such that not Next*(7, if)
+50, 58, 69
+5000
+15 - Next: stmt number, if 
+read r; if if;
+Select r such that not Next*(24, if)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+16 - Next: stmt number, assign 
+assign a;
+Select a such that not Next*(36, a)
+1, 2, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+17 - Next: stmt number, assign 
+assign a;
+Select a such that not Next*(12, a)
+1, 2, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+18 - Next: wildcard, stmt number
+stmt s;
+Select s such that not Next*(_, 40)
+
+5000
+19 - Next: wildcard, stmt
+stmt s;
+Select s such that not Next*(_, s)
+1, 44, 66
+5000
+20 - Next: wildcard, read
+read r;
+Select r such that not Next*(_, r)
+
+5000
+21 - Next: wildcard, print
+print p;
+Select p such that not Next*(_, p)
+
+5000
+22 - Next: wildcard, while
+while w;
+Select w such that not Next*(_, w)
+
+5000
+23 - Next: wildcard, if
+if if;
+Select if such that not Next*(_, if)
+
+5000
+24 - Next: wildcard, assign
+assign a;
+Select a such that not Next*(_, a)
+1, 44
+5000
+25 - Next: stmt, stmt number 
+stmt s;
+Select s such that not Next*(s, 38)
+39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+26 - Next: stmt, stmt number 
+stmt s;
+Select s such that not Next*(s, 11)
+39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+27 - Next: stmt, stmt1
+stmt s; stmt s1;
+Select s such that not Next*(s, s1)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+28 - Next: stmt, stmt
+stmt s;
+Select s such that not Next*(s, s)
+1, 2, 39, 40, 41, 42, 43, 44, 45, 46, 49, 50, 51, 52, 55, 58, 59, 60, 65, 66, 77
+5000
+29 - Next: stmt, read
+stmt s; read r;
+Select s such that not Next*(s, r)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+30 - Next: stmt, print
+stmt s; print p;
+Select s such that not Next*(s, p)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+31 - Next: stmt, while
+stmt s; while w;
+Select s such that not Next*(s, w)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+32 - Next: stmt, if
+stmt s; if if;
+Select s such that not Next*(s, if)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+33 - Next: stmt, assign
+stmt s; assign a;
+Select s such that not Next*(s, a)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+34 - Next: read, stmt number 
+read r;
+Select r such that not Next*(r, 27)
+43, 46, 71, 73
+5000
+35 - Next: read, stmt number 
+read r;
+Select r such that not Next*(r, 18)
+43, 46, 71, 73
+5000
+36 - Next: read, wildcard
+read r;
+Select r such that not Next*(r, _)
+43
+5000
+37 - Next: read, stmt
+stmt s; read r;
+Select r such that not Next*(r, s)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+38 - Next: read, read1
+read r; read r1;
+Select r such that not Next*(r, r1)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+39 - Next: read, read
+read r;
+Select r such that not Next*(r, r)
+43, 46
+5000
+40 - Next: read, print
+read r; print p;
+Select r such that not Next*(r, p)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+41 - Next: read, while
+read r; while w;
+Select r such that not Next*(r, w)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+42 - Next: read, if
+read r; if if;
+Select r such that not Next*(r, if)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+43 - Next: read, assign
+read r; assign a;
+Select r such that not Next*(r, a)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+44 - Next: print, stmt number 
+print p;
+Select p such that not Next*(p, 15)
+39, 45, 54, 65
+5000
+45 - Next: print, stmt number 
+print p;
+Select p such that not Next*(p, 30)
+39, 45, 54, 65
+5000
+46 - Next: print, wildcard
+print p;
+Select p such that not Next*(p, _)
+65
+5000
+47 - Next: print, stmt
+print p; stmt s;
+Select s such that not Next*(p, s)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
+5000
+48 - Next: print, read
+print p; read r;
+Select p such that not Next*(p, r)
+14, 15, 17, 20, 22, 24, 32, 39, 45, 54, 65
+5000
+49 - Next: print, print1
+print p; print p1;
+Select p such that not Next*(p, p1)
+14, 15, 17, 20, 22, 24, 32, 39, 45, 54, 65
+5000
+50 - Next: print, print
+print p;
+Select p such that not Next*(p, p)
+39, 45, 65
+5000
+51 - Next: print, while
+print p; while w;
+Select p such that not Next*(p, w)
+14, 15, 17, 20, 22, 24, 32, 39, 45, 54, 65
+5000
+52 - Next: print, if
+print p; if if;
+Select p such that not Next*(p, if)
+14, 15, 17, 20, 22, 24, 32, 39, 45, 54, 65
+5000
+53 - Next: print, assign
+print p; assign a;
+Select p such that not Next*(p, a)
+14, 15, 17, 20, 22, 24, 32, 39, 45, 54, 65
+5000
+54 - Next: while, stmt number 
+while w;
+Select w such that not Next*(w, 26)
+47, 53, 56, 61, 63, 67
+5000
+55 - Next: while, stmt number 
+while w;
+Select w such that not Next*(w, 37)
+47, 53, 56, 61, 63, 67
+5000
+56 - Next: while, wildcard
+while w;
+Select w such that not Next*(w, _)
+
+5000
+57 - Next: while, stmt
+while w; stmt s;
+Select w such that not Next*(w, s)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+58 - Next: while, read
+while w; read r;
+Select w such that not Next*(w, r)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+59 - Next: while, print
+while w; print p;
+Select w such that not Next*(w, p)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+60 - Next: while, while1
+while w; while w1;
+Select w such that not Next*(w, w1)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+61 - Next: while, while
+while w;
+Select w such that not Next*(w, w)
+
+5000
+62 - Next: while, if
+while w; if if;
+Select w such that not Next*(w, if)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+63 - Next: while, assign
+while w; assign a;
+Select w such that not Next*(w, a)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+64 - Next: if, stmt number 
+if if;
+Select if such that not Next*(if, 33)
+50, 58, 69
+5000
+65 - Next: if, stmt number 
+if if;
+Select if such that not Next*(if, 15)
+50, 58, 69
+5000
+66 - Next: if, wildcard
+if if;
+Select if such that not Next*(if, _)
+
+5000
+67 - Next: if, stmt
+if if; stmt s;
+Select if such that not Next*(if, s)
+8, 10, 16, 50, 58, 69
+5000
+68 - Next: if, read
+if if; read r;
+Select if such that not Next*(if, r)
+8, 10, 16, 50, 58, 69
+5000
+69 - Next: if, print
+if if; print p;
+Select if such that not Next*(if, p)
+8, 10, 16, 50, 58, 69
+5000
+70 - Next: if, while
+if if; while w;
+Select if such that not Next*(if, w)
+8, 10, 16, 50, 58, 69
+5000
+71 - Next: if, if1
+if if; if if1;
+Select if such that not Next*(if, if1)
+8, 10, 16, 50, 58, 69
+5000
+72 - Next: if, if
+if if;
+Select if such that not Next*(if, if)
+50, 58
+5000
+73 - Next: if, assign
+if if; assign a;
+Select if such that not Next*(if, a)
+8, 10, 16, 50, 58, 69
+5000
+74 - Next: assign, stmt number 
+assign a;
+Select a such that not Next*(a, 37)
+41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+75 - Next: assign, stmt number 
+assign a;
+Select a such that not Next*(a, 55)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 51, 55, 57, 59, 60, 62, 64, 70
+5000
+76 - Next: assign, wildcard
+assign assign;
+Select assign such that not Next*(assign, _)
+
+5000
+77 - Next: assign, stmt
+assign a; stmt s;
+Select a such that not Next*(a, s)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+78 - Next: assign, read
+assign a; read r;
+Select a such that not Next*(a, r)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+79 - Next: assign, print
+assign a; print p;
+Select a such that not Next*(a, p)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+80 - Next: assign, while
+assign a; while w;
+Select a such that not Next*(a, w)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+81 - Next: assign, if
+assign a; if if;
+Select a such that not Next*(a, if)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+82 - Next: assign, assign1
+assign a; assign a1;
+Select a such that not Next*(a, a1)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+83 - Next: assign, assign
+assign a;
+Select a such that not Next*(a, a)
+1, 2, 41, 44, 49, 51, 52, 55, 59, 60
+5000
+84 - Invalid Syntax Error (2 ;;)
+stmt s;; stmt s1;
+Select s such that not Next*(s, s1)
+SyntaxError
+5000
+85 - Invalid Syntax Error (; after Select)
+stmt s; stmt s1;
+Select s such that not Next*(s, s1);
+SyntaxError
+5000
+86 - Invalid Semantic Error (Missing synonym)
+read r;
+Select r such that not Next*(r, p)
+SemanticError
+5000
+87 - Invalid Syntax Error (incorrect spelling)
+assign a; stmt s1;
+Select s such that Net*(a, s1)
+SyntaxError
+5000
+88 - Invalid Syntax Error (incorrect spelling)
+assign a; stmt s1;
+Select s suchthat not Next*(a, s1)
+SyntaxError
+5000
+89 - Next: call, stmt number 
+call c;
+Select c such that not Next*(c, 24)
+40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+90 - Next: call, stmt number 
+call call;
+Select call such that not Next*(call, 5)
+40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+91 - Next: stmt number, call 
+call c;
+Select c such that not Next*(22, c)
+66, 68, 72, 74, 75, 76, 77
+5000
+92 - Next: stmt number, call 
+call c;
+Select c such that not Next*(50, c)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+93 - Next: call, wildcard
+call c;
+Select c such that not Next*(c, _)
+77
+5000
+94 - Next: wildcard, call
+call c;
+Select c such that not Next*(_, c)
+66
+5000
+95 - Next: call, stmt
+call c; stmt s;
+Select c such that not Next*(c, s)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+96 - Next: stmt, call
+stmt stmt; call call;
+Select call such that not Next*(stmt, call)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+97 - Next: call, print
+call c; print print;
+Select c such that not Next*(c, print)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+98 - Next: print, call
+print p; call call;
+Select call such that not Next*(p, call)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+99 - Next: call, while
+call c; while while;
+Select c such that not Next*(c, while)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+100 - Next: while, call
+while w; call c;
+Select w such that not Next*(w, c)
+3, 21, 29, 47, 53, 56, 61, 63, 67
+5000
+101 - Next: call, if
+call c; if if;
+Select c such that not Next*(c, if)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+102 - Next: if, call
+if if; call c;
+Select if such that not Next*(if, c)
+8, 10, 16, 50, 58, 69
+5000
+103 - Next: call, assign
+call c; assign a;
+Select c such that not Next*(c, a)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+104 - Next: assign, call
+assign assign; call c;
+Select assign such that not Next*(assign, c)
+1, 2, 4, 6, 9, 11, 18, 19, 25, 27, 35, 36, 37, 38, 41, 44, 48, 49, 51, 52, 55, 57, 59, 60, 62, 64, 70
+5000
+105 - Next: call, call
+call c;
+Select c such that not Next*(c, c)
+40, 42, 66, 77
+5000
+106 - Next: call, read
+call c; read r;
+Select c such that not Next*(c, r)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000
+107 - Next: read, call
+read r; call c;
+Select r such that not Next*(r, c)
+5, 7, 12, 13, 26, 28, 30, 33, 43, 46, 71, 73
+5000
+108 - Next: call, call1
+call c, c1;
+Select c such that not Next*(c, c1)
+23, 31, 34, 40, 42, 66, 68, 72, 74, 75, 76, 77
+5000

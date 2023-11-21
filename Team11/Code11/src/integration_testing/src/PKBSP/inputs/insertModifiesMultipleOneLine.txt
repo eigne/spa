@@ -1,0 +1,1 @@
+procedure main {modifyVar=usesVar;read readVar;if(ifVar>0)then{thenVar=modifyVar;}else{elseVar=modifyVar;}while(whileVar>0){loopVar=modifyVar;}print printVar;} procedure subProc{procVar=modifyVar;}

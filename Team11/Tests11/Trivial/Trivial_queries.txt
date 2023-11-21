@@ -1,0 +1,40 @@
+1 - Select all statements
+stmt s99;
+Select s99
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47
+5000
+2 - Select all variables
+variable vInnYVinnY1;
+Select vInnYVinnY1
+x, a, b, c, clear, d, r, l, m, n, g, ggggggg, t, f, read, i, g6, cs3203, procedure, print
+5000
+3 - Select all constants
+constant cursejjk1;
+Select cursejjk1
+1, 2, 3, 9, 10, 3222, 0, 2981111, 6969
+5000
+4 - Select all reads
+read r2;
+Select r2
+1, 4, 6, 7, 16, 20, 26, 37, 46
+5000
+5 - Select all prints
+print Pump1tUp;
+Select Pump1tUp
+8, 17, 19, 23, 25, 30, 41, 47
+5000
+6 - Select all whiles
+while wha13;
+Select wha13
+15, 24, 27, 36, 43
+5000
+7 - Select all ifs
+if If5IFS;
+Select If5IFS
+2, 3, 12, 31, 35
+5000
+8 - Select all assignments
+assign aimReadyFIRE;
+Select aimReadyFIRE
+5, 9, 10, 11, 13, 14, 18, 21, 22, 28, 29, 32, 33, 34, 38, 39, 40, 42, 44, 45
+5000

@@ -1,0 +1,18 @@
+procedure above1 {
+	x = 1;
+}
+
+procedure above2 {
+	x = 1;
+}
+
+procedure main {
+}
+
+procedure below1 {
+	x = 2;
+}
+
+procedure below2 {
+	x = 2;
+}

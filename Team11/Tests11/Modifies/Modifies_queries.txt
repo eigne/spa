@@ -1,0 +1,320 @@
+1 - Modifies(s, v)
+stmt s; variable v;
+Select s such that Modifies(s, v)
+1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 18, 19, 20, 22, 23, 24, 25, 26, 30, 31, 33
+5000
+2 - Modifies(s, v)
+stmt s; variable v;
+Select v such that Modifies(s, v)
+ASsign4, a, hehe, n11, procedure, r, r14, r15, r2, r21, r8, read
+5000
+3 - Modifies(s, var): no nest
+stmt s;
+Select s such that Modifies(s, "r2")
+5
+5000
+4 - Modifies(s, var): 1 nest
+stmt s;
+Select s such that Modifies(s, "ASsign4")
+7, 9
+5000
+5 - Modifies(s, var): 2 nest
+stmt s;
+Select s such that Modifies(s, "procedure")
+7, 10, 11, 31
+5000
+6 - Modifies(s, var): >= 3 nest
+stmt s;
+Select s such that Modifies(s, "r14")
+7, 15, 19, 22
+5000
+7 - Modifies(s, _)
+stmt s;
+Select s such that Modifies(s, _)
+1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 18, 19, 20, 22, 23, 24, 25, 26, 30, 31, 33
+5000
+8 - Modifies(a, v)
+assign a; variable v;
+Select a such that Modifies(a, v)
+2, 3, 9, 11, 18, 26, 31
+5000
+9 - Modifies(a, v)
+assign a; variable v;
+Select v such that Modifies(a, v)
+ASsign4, a, hehe, n11, procedure, read
+5000
+10 - Modifies(a, var): same variable assigned multiple times
+assign a;
+Select a such that Modifies(a, "procedure")
+11, 31
+5000
+11 - Modifies(a, var): variable assigned once
+assign a;
+Select a such that Modifies(a, "n11")
+18
+5000
+12 - Modifies(a, _)
+assign a;
+Select a such that Modifies(a, _)
+2, 3, 9, 11, 18, 26, 31
+5000
+13 - Modifies(re, v)
+read re; variable v;
+Select re such that Modifies(re, v)
+5, 14, 22, 23, 30, 33
+5000
+14 - Modifies(re, v)
+read re; variable v;
+Select v such that Modifies(re, v)
+r, r14, r15, r2, r21, r8
+5000
+15 - Modifies(re, var)
+read re;
+Select re such that Modifies(re, "r14")
+22
+5000
+16 - Modifies(re, _)
+read re;
+Select re such that Modifies(re, _)
+5, 14, 22, 23, 30, 33
+5000
+17 - Modifies(pn, v)
+print pn; variable v;
+Select pn such that Modifies(pn, v)
+
+5000
+18 - Modifies(pn, v)
+print pn; variable v;
+Select v such that Modifies(pn, v)
+
+5000
+19 - Modifies(pn, var)
+print pn;
+Select pn such that Modifies(pn, "p1")
+
+5000
+20 - Modifies(pn, _)
+print pn;
+Select pn such that Modifies(pn, _)
+
+5000
+21 - Modifies(if, v)
+if if; variable v;
+Select if such that Modifies(if, v)
+7, 15
+5000
+22 - Modifies(if, v)
+if if; variable v;
+Select v such that Modifies(if, v)
+ASsign4, a, hehe, n11, procedure, r, r14, r15, r8
+5000
+23 - Modifies(if, var)
+if if;
+Select if such that Modifies(if, "r14")
+7, 15
+5000
+24 - Modifies(if, _)
+if if;
+Select if such that Modifies(if, _)
+7, 15
+5000
+25 - Modifies(wh, v)
+while wh; variable v;
+Select wh such that Modifies(wh, v)
+10, 19, 24
+5000
+26 - Modifies(wh, v)
+while wh; variable v;
+Select v such that Modifies(wh, v)
+a, hehe, procedure, r, r14, read
+5000
+27 - Modifies(wh, var)
+while wh;
+Select wh such that Modifies(wh, "r14")
+19
+5000
+28 - Modifies(wh, _)
+while wh;
+Select wh such that Modifies(wh, _)
+10, 19, 24
+5000
+29 - Modifies(stmt, v): container statement
+variable v;
+Select v such that Modifies(7, v)
+ASsign4, a, hehe, n11, procedure, r, r14, r15, r8
+5000
+30 - Modifies(stmt, var)
+variable v;
+Select v such that Modifies(7, "procedure")
+ASsign4, B3, HErE3, a, a12, a16, a17, a3, a6, b17, b3, b6, cAt3, haha, hehe, i3, l16, m11, n11, p, p1, p10, p13, p16, p18, p19, p20, p7, procedure, r, r14, r15, r2, r21, r8, read, x12, x16, x18, x5, x9
+5000
+31 - Modifies(stmt, v): regular statement
+variable v;
+Select v such that Modifies(18, v)
+n11
+5000
+32 - Modifies(stmt, _)
+variable v;
+Select v such that Modifies(7, _)
+ASsign4, B3, HErE3, a, a12, a16, a17, a3, a6, b17, b3, b6, cAt3, haha, hehe, i3, l16, m11, n11, p, p1, p10, p13, p16, p18, p19, p20, p7, procedure, r, r14, r15, r2, r21, r8, read, x12, x16, x18, x5, x9
+5000
+33 - Modifies(stmt, NonExistentVar)
+stmt s;
+Select s such that Modifies(s, "NonExistent")
+
+5000
+34 - Modifies(a, NonExistentVar)
+assign a;
+Select a such that Modifies(a, "NonExistent")
+
+5000
+35 - Modifies(re, NonExistentVar)
+read re;
+Select re such that Modifies(re, "NonExistent")
+
+5000
+36 - Modifies(pn, NonExistentVar)
+print pn;
+Select pn such that Modifies(pn, "NonExistent")
+
+5000
+37 - Modifies(if, NonExistentVar)
+if if;
+Select if such that Modifies(if, "NonExistent")
+
+5000
+38 - Modifies(wh, NonExistentVar)
+while wh;
+Select wh such that Modifies(wh, "NonExistent")
+
+5000
+39 - Modifies(_, v)
+variable v;
+Select v such that Modifies(_, v)
+SemanticError
+5000
+40 - Modifies(_, var)
+variable v;
+Select v such that Modifies(_, "procedure")
+SemanticError
+5000
+41 - Modifies(_, _)
+variable v;
+Select v such that Modifies(_, _)
+SemanticError
+5000
+42 - Modifies(p, v)
+procedure p; variable v;
+Select p such that Modifies(p, v)
+ModifiesTest123, begin, helloWorld123
+5000
+43 - Modifies(p, var)
+procedure p;
+Select p such that Modifies(p, "r14")
+ModifiesTest123
+5000
+44 - Modifies(p, _)
+procedure p;
+Select p such that Modifies(p, _)
+ModifiesTest123, begin, helloWorld123
+5000
+45 - Modifies(p, NonExistentVar)
+procedure p;
+Select p such that Modifies(p, "NonExistent")
+
+5000
+46 - Modifies(_, p)
+procedure p;
+Select p such that Modifies(_, p)
+SemanticError
+5000
+47 - Modifies(procName, v)
+variable v;
+Select v such that Modifies("ModifiesTest123", v)
+ASsign4, a, hehe, n11, procedure, r, r14, r15, r2, r21, r8, read
+5000
+48 - Modifies(procName, var)
+stmt s;
+Select s such that Modifies("ModifiesTest123", "procedure")
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33
+5000
+49 - Modifies(procName, _)
+stmt s;
+Select s such that Modifies("ModifiesTest123", _)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33
+5000
+50 - Weird synonyms: Assign synonym is Modifies
+assign Modifies;
+Select Modifies such that Modifies(Modifies, "procedure")
+11, 31
+5000
+51 - Weird case: spaces and tabs in queries
+assign			       a			; variable    v                  ; 
+Select					a				such that		Modifies(		a	,    v				)
+2, 3, 9, 11, 18, 26, 31
+5000
+52 - Weird case: new lines
+assign a; variable v
+			;		Select a such that    	Modifies(a, v)
+2, 3, 9, 11, 18, 26, 31
+5000
+53 - Syntax error: Missing semicolon
+assign a variable v
+Select a such that Modifies(a, v)
+SyntaxError
+5000
+54 - Syntax error: synonym start with numbers
+assign 1a; variable v;
+Select 1a such that Modifies(1a, v)
+SyntaxError
+5000
+55 - Semantic error: synonym not declared
+assign a; variable v;
+Select a such that Modifies(b, v)
+SemanticError
+5000
+56 - Semantic error: same synonym declared twice: different entities
+assign a; variable a;
+Select a such that Modifies(a, a)
+SemanticError
+5000
+57 - Semantic error: same synonym declared twice: same entity, different place
+assign a; variable v; assign a;
+Select a such that Modifies(a, v)
+SemanticError
+5000
+58 - Semantic error: arg2 synonym but not variable synonym
+assign a; print v;
+Select a such that Modifies(a, v)
+SemanticError
+5000
+59 - Weird case: weird synonym names
+assign ACS3203abc; variable nAnI123kOrE;
+Select ACS3203abc such that Modifies(ACS3203abc, nAnI123kOrE)
+2, 3, 9, 11, 18, 26, 31
+5000
+60 - Weird case: unused synonym
+assign a; variable v; print pn;
+Select a such that Modifies(a, v)
+2, 3, 9, 11, 18, 26, 31
+5000
+61 - Weird case: synonym name same as entity
+assign assign; variable variable;
+Select assign such that Modifies(assign, variable)
+2, 3, 9, 11, 18, 26, 31
+5000
+62 - Modifies(call, _)
+call call;
+Select call such that Modifies(call, _)
+1, 13, 17, 20, 25, 6, 8
+5000
+63 - Modifies(call, var)
+call call;
+Select call such that Modifies(call, "hehe")
+8, 13, 20
+5000
+64 - Modifies(call, variable)
+call call; variable v;
+Select call such that Modifies(call, v)
+1, 13, 17, 20, 25, 6, 8
+5000
