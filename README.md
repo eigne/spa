@@ -4,4 +4,4 @@ Parses code and stores relationships between entities and abstractions (e.g. var
 
 Users can query relationships with an SQL-like syntax
 
-SIMPLE Programming Language Specifications: [https://nus-cs3203.github.io/course-website/contents/basic-spa-requirements/simple-programming.html](https://nus-cs3203.github.io/course-website/contents/basic-spa-requirements/motivation.html)
+[SIMPLE Programming Language Specifications](https://nus-cs3203.github.io/course-website/contents/basic-spa-requirements/motivation.html)
